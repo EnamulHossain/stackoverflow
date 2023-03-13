@@ -1,0 +1,17 @@
+{
+  "workbench.editorAssociations": {
+    "*.md": "default"
+  },
+  "sqltools.connections": [
+    {
+      "previewLimit": 50,
+      "server": "localhost",
+      "port": 5432,
+      "driver": "PostgreSQL",
+      "name": "Blog CMS",
+      "database": "blog_cms",
+      "username": "postgres",
+      "password": "secret"
+    }
+  ]
+}
