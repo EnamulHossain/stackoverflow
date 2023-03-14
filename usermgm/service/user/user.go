@@ -10,8 +10,10 @@ import (
 
 type CoreUser interface {
 	Register(storage.User) (*storage.User, error)
+	AdminRegister(u storage.User) (*storage.User, error)
 	Login(storage.Login) (*storage.User, error)
 	ListUser() ([]storage.User, error)
+	DeleteUser(id int32) error
 }
 
 type UserSvc struct {
@@ -25,6 +27,7 @@ func NewUserSvc(cu CoreUser) *UserSvc {
 	}
 }
 
+
 func (us UserSvc) Register(ctx context.Context, r *userpb.RegisterRequest) (*userpb.RegisterResponse, error) {
 	user := storage.User{
 		FirstName: r.GetFirstName(),
@@ -34,7 +37,6 @@ func (us UserSvc) Register(ctx context.Context, r *userpb.RegisterRequest) (*use
 		Password:  r.GetPassword(),
 		IsAdmin:   false,
 		IsActive:  true,
-
 	}
 
 	if err := user.Validate(); err != nil {
@@ -53,11 +55,48 @@ func (us UserSvc) Register(ctx context.Context, r *userpb.RegisterRequest) (*use
 			LastName:  u.LastName,
 			Username:  u.Username,
 			Email:     u.Email,
-			IsActive:  u.IsActive,
 			IsAdmin:   false,
+			IsActive:  u.IsActive,
 		},
 	}, nil
 }
+
+
+
+
+func (us UserSvc) AdminRegister(ctx context.Context, r *userpb.AdminRegisterRequest) (*userpb.AdminRegisterResponse, error) {
+	user := storage.User{
+		FirstName: r.GetFirstName(),
+		LastName:  r.GetLastName(),
+		Email:     r.GetEmail(),
+		Username:  r.GetUsername(),
+		Password:  r.GetPassword(),
+		IsAdmin:   true,
+		IsActive:  true,
+	}
+
+	if err := user.Validate(); err != nil {
+		return nil, err //TODO:: will fix when implement this service in cms
+	}
+
+	u, err := us.core.AdminRegister(user)
+	if err != nil {
+		return nil, err
+	}
+
+	return &userpb.AdminRegisterResponse{
+		User: &userpb.User{
+			ID:        int32(u.ID),
+			FirstName: u.FirstName,
+			LastName:  u.LastName,
+			Username:  u.Username,
+			Email:     u.Email,
+			IsAdmin:   true,
+			IsActive:  true,
+		},
+	}, nil
+}
+
 
 func (us UserSvc) Login(ctx context.Context, r *userpb.LoginRequest) (*userpb.LoginResponse, error) {
 	login := storage.Login{
@@ -88,32 +127,42 @@ func (us UserSvc) Login(ctx context.Context, r *userpb.LoginRequest) (*userpb.Lo
 }
 
 func (us UserSvc) ListUser(ctx context.Context, req *userpb.ListUserRequest) (*userpb.ListUserResponse, error) {
-	
-		users, err :=us.core.ListUser()
-		if err != nil {
-			return nil, err
+
+	users, err := us.core.ListUser()
+	if err != nil {
+		return nil, err
+	}
+	fmt.Println("..................", users)
+
+	list := make([]*userpb.User, len(users))
+	for i, u := range users {
+		list[i] = &userpb.User{
+			ID:        int32(u.ID),
+			FirstName: u.FirstName,
+			LastName:  u.LastName,
+			Username:  u.Username,
+			Email:     u.Email,
+			IsActive:  u.IsActive,
+			IsAdmin:   u.IsAdmin,
 		}
-		fmt.Println("..................",users)
+	}
+
+	fmt.Println("..................", list)
+
+	return &userpb.ListUserResponse{
+		Users: list,
+	}, nil
+
+}
+
+func (us UserSvc) DeleteUser(ctx context.Context, req *userpb.DeleteUserRequest) (*userpb.DeleteUserResponse, error) {
+
+	fmt.Println("idin service", req.GetID())
+	err:= us.core.DeleteUser(req.GetID())
+
+	if err != nil {
+		return nil,err
+	}
 	
-		list := make([]*userpb.User, len(users))
-		for i, u := range users {
-			list[i] = &userpb.User{
-				ID:        int32(u.ID),
-				FirstName: u.FirstName,
-				LastName:  u.LastName,
-				Username:  u.Username,
-				Email:     u.Email,
-				IsActive:  u.IsActive,
-				IsAdmin:   u.IsAdmin,
-			}
-		}
-
-
-		fmt.Println("..................",list)
-		
-		return &userpb.ListUserResponse{
-			Users: list,
-		}, nil
-
-
+	return &userpb.DeleteUserResponse{}, nil
 }

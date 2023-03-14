@@ -2,6 +2,7 @@ package userpb
 
 type UserService interface {
 	Register(RegisterRequest) RegisterResponse
+	AdminRegister(AdminRegisterRequest) AdminRegisterResponse
 	Login(LoginRequest) LoginResponse
 	ListUser(ListUserRequest) ListUserResponse
 	EditUser(EditUserRequest) EditUserResponse
@@ -29,6 +30,20 @@ type RegisterRequest struct {
 }
 
 type RegisterResponse struct {
+	User User `pb:"1"`
+}
+
+type AdminRegisterRequest struct {
+	FirstName string `pb:"1"`
+	LastName  string `pb:"2"`
+	Username  string `pb:"3"`
+	Email     string `pb:"4"`
+	Password  string `pb:"5"`
+	IsActive  bool   `pb:"6"`
+	IsAdmin   bool   `pb:"7"`
+}
+
+type AdminRegisterResponse struct {
 	User User `pb:"1"`
 }
 
