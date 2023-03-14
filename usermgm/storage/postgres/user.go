@@ -2,6 +2,7 @@ package postgres
 
 import (
 	"fmt"
+	"log"
 
 	"stackoverflow/usermgm/storage"
 )
@@ -54,3 +55,21 @@ func (ps PostgresStorage) GetUserByUsername(usernanme string) (*storage.User, er
 
 	return &user, nil
 }
+
+
+
+
+
+const listQuery = `SELECT * FROM users WHERE deleted_at IS NULL`
+
+func (s PostgresStorage) ListUser() ([]storage.User, error) {
+
+	var user []storage.User
+	if err := s.DB.Select(&user, listQuery); err != nil {
+		log.Fatal(err)
+		return nil, err
+	}
+	return user, nil
+}
+
+

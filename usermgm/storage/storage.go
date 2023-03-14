@@ -58,3 +58,10 @@ func (l Login) Validate() error  {
 		),
 	)
 }
+
+
+
+type UserFilter struct {
+	SearchTerm string
+	ListUser []User
+}

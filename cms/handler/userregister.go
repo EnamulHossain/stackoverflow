@@ -54,20 +54,6 @@ func (h Handler) Register(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
-func (h Handler) pareseRegisterTemplate(w http.ResponseWriter, form RegisterUserForm) {
-	t := h.Templates.Lookup("register.html")
-	if t == nil {
-		log.Println("unable to lookup register template")
-		h.Error(w, "internal server error", http.StatusInternalServerError)
-		return
-	}
-
-	if err := t.Execute(w, form); err != nil {
-		log.Println(err)
-		http.Error(w, "internal server error", http.StatusInternalServerError)
-	}
-}
-
 func (h Handler) RegisterPost(w http.ResponseWriter, r *http.Request) {
 	if err := r.ParseForm(); err != nil {
 		log.Println(err)

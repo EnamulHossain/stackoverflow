@@ -10,6 +10,7 @@ import (
 type CoreUser interface {
 	Register(storage.User) (*storage.User, error)
 	Login(storage.Login) (*storage.User, error)
+	ListUser() ([]storage.User, error)
 }
 
 type UserSvc struct {
@@ -82,4 +83,33 @@ func (us UserSvc) Login(ctx context.Context, r *userpb.LoginRequest) (*userpb.Lo
 			IsAdmin:   u.IsAdmin,
 		},
 	}, nil
+}
+
+func (us UserSvc) ListUser(ctx context.Context, req *userpb.ListUserRequest) (*userpb.ListUserResponse, error) {
+	
+		users, err :=us.core.ListUser()
+		if err != nil {
+			return nil, err
+		}
+	
+		list := make([]*userpb.User, len(users))
+		for i, u := range users {
+			list[i] = &userpb.User{
+				ID:        int32(u.ID),
+				FirstName: u.FirstName,
+				LastName:  u.LastName,
+				Username:  u.Username,
+				Email:     u.Email,
+				IsActive:  u.IsActive,
+				IsAdmin:   u.IsAdmin,
+			}
+		}
+
+		
+		
+		return &userpb.ListUserResponse{
+			Users: list,
+		}, nil
+
+
 }

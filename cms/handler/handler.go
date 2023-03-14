@@ -110,9 +110,9 @@ func NewHandler(sm *scs.SessionManager, formDecoder *form.Decoder, usermgmConn *
 		r.Use(h.Authentication)
 
 		r.Route("/users", func(r chi.Router) {
-			// r.Get("/", h.ListUser)
+			r.Get("/", h.ListUser)
 
-			// r.Get("/create", h.CreateUser)
+			r.Get("/list", h.ListUser)
 
 			// r.Post("/store", h.StoreUser)
 

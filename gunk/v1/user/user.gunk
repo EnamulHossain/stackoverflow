@@ -3,10 +3,13 @@ package userpb
 type UserService interface {
 	Register(RegisterRequest) RegisterResponse
 	Login(LoginRequest) LoginResponse
+	ListUser(ListUserRequest) ListUserResponse
+	EditUser(EditUserRequest) EditUserResponse
+	DeleteUser(DeleteUserRequest) DeleteUserResponse
 }
 
 type User struct {
-	ID        int    `pb:"1"` 
+	ID        int    `pb:"1"`
 	FirstName string `pb:"2"`
 	LastName  string `pb:"3"`
 	Username  string `pb:"4"`
@@ -36,4 +39,25 @@ type LoginRequest struct {
 
 type LoginResponse struct {
 	User User `pb:"1"`
+}
+
+type ListUserRequest struct{}
+
+type ListUserResponse struct {
+	Users []User `pb:"1"`
+}
+
+type EditUserRequest struct {
+	ID int `pb:"1"`
+}
+
+type EditUserResponse struct {
+	User User `pb:"1"`
+}
+
+type DeleteUserRequest struct {
+	ID int `pb:"1"`
+}
+
+type DeleteUserResponse struct {
 }

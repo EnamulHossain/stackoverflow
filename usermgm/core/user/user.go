@@ -11,6 +11,7 @@ import (
 type UserStore interface {
 	Register(storage.User) (*storage.User, error)
 	GetUserByUsername(string) (*storage.User, error)
+	ListUser() ([]storage.User, error)
 }
 
 type CoreUser struct {
@@ -53,4 +54,14 @@ func (cu CoreUser) Login(l storage.Login) (*storage.User, error) {
 	}
 
 	return u, nil
+}
+
+ 
+func (cu CoreUser)  ListUser() ([]storage.User, error){
+	
+	list, err := cu.store.ListUser()
+	if err != nil {
+		return nil, err
+	}
+	return list, nil
 }
