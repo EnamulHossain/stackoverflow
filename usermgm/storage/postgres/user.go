@@ -13,16 +13,16 @@ const registerQuery = `INSERT INTO users (
 	username,
 	email,
 	password,
-	is_admin,
-	is_active
+	is_active,
+	is_admin
 ) VALUES(
 	:first_name,
 	:last_name,
 	:username,
 	:email,
 	:password,
-	:is_admin,
-	:is_active
+	:is_active,
+	:is_admin
 ) RETURNING *`
 
 func (s PostgresStorage) Register(u storage.User) (*storage.User, error) {

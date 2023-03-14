@@ -2,6 +2,7 @@ package user
 
 import (
 	"context"
+	"fmt"
 
 	userpb "stackoverflow/gunk/v1/user"
 	"stackoverflow/usermgm/storage"
@@ -31,8 +32,9 @@ func (us UserSvc) Register(ctx context.Context, r *userpb.RegisterRequest) (*use
 		Email:     r.GetEmail(),
 		Username:  r.GetUsername(),
 		Password:  r.GetPassword(),
+		IsAdmin:   false,
 		IsActive:  true,
-		IsAdmin:   r.GetIsAdmin(),
+
 	}
 
 	if err := user.Validate(); err != nil {
@@ -52,7 +54,7 @@ func (us UserSvc) Register(ctx context.Context, r *userpb.RegisterRequest) (*use
 			Username:  u.Username,
 			Email:     u.Email,
 			IsActive:  u.IsActive,
-			IsAdmin:   u.IsAdmin,
+			IsAdmin:   false,
 		},
 	}, nil
 }
@@ -91,6 +93,7 @@ func (us UserSvc) ListUser(ctx context.Context, req *userpb.ListUserRequest) (*u
 		if err != nil {
 			return nil, err
 		}
+		fmt.Println("..................",users)
 	
 		list := make([]*userpb.User, len(users))
 		for i, u := range users {
@@ -105,7 +108,8 @@ func (us UserSvc) ListUser(ctx context.Context, req *userpb.ListUserRequest) (*u
 			}
 		}
 
-		
+
+		fmt.Println("..................",list)
 		
 		return &userpb.ListUserResponse{
 			Users: list,

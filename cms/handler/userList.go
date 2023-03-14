@@ -4,14 +4,24 @@ import (
 	"fmt"
 	"net/http"
 	userpb "stackoverflow/gunk/v1/user"
-	"stackoverflow/usermgm/storage"
 )
 
 type Ulist struct {
-	Users []storage.User
+	Users []User
 	SearchTerm string
 }
 
+
+type User struct{
+	ID        int         
+	FirstName string       
+	LastName  string       
+	Email     string      
+	Username  string       
+	Password  string      
+	IsActive  bool        
+	IsAdmin   bool        
+}
 func (c Handler) ListUser(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("request handler")
 	res, err := c.usermgmSvc.ListUser(r.Context(), &userpb.ListUserRequest{})
@@ -19,8 +29,23 @@ func (c Handler) ListUser(w http.ResponseWriter, r *http.Request) {
 		http.Error(w,"Internal Server Error", http.StatusInternalServerError)
 	}
 
-	fmt.Println("---user list---")
-	fmt.Printf("%#v", res.Users)
-	fmt.Println("---user list---")
-	c.pareseUserListTemplate(w, res)
+	data := []User{}
+
+if res != nil {
+
+	for _,u := range res.Users {
+		data = append(data, User{
+			ID:        int(u.ID),
+			FirstName: u.FirstName,
+			LastName:  u.LastName,
+			Email:     u.Email,
+			Username:  u.Username,
+			IsActive:  u.IsActive,
+			IsAdmin:   u.IsAdmin,
+		})
+	}
+}	
+	c.pareseUserListTemplate(w, Ulist{
+		Users:      data,
+	})
 }

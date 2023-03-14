@@ -63,5 +63,15 @@ func (cu CoreUser)  ListUser() ([]storage.User, error){
 	if err != nil {
 		return nil, err
 	}
+	fmt.Println("core....................................core")
+	fmt.Println("core....................................core",list)
+	fmt.Println("core....................................core")
+
+
+
+
+
 	return list, nil
+
+
 }
