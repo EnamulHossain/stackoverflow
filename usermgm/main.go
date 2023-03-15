@@ -7,8 +7,11 @@ import (
 	"net"
 	"strings"
 
+	categorypb "stackoverflow/gunk/v1/category"
 	userpb "stackoverflow/gunk/v1/user"
 	cu "stackoverflow/usermgm/core/user"
+	cc "stackoverflow/usermgm/core/category"
+	"stackoverflow/usermgm/service/category"
 	"stackoverflow/usermgm/service/user"
 	"stackoverflow/usermgm/storage/postgres"
 
@@ -59,6 +62,10 @@ func main() {
 	userCore := cu.NewCoreUser(postgreStorage)
 	userSvc := user.NewUserSvc(userCore)
 	userpb.RegisterUserServiceServer(grpcServer, userSvc)
+
+	categoryCore:= cc.NewCoreCategory(postgreStorage)
+	categorySvc :=category.NewCatrgorySvc(categoryCore)
+	categorypb.RegisterCategoryServiceServer(grpcServer,categorySvc)
 
 	// start reflection server
 	reflection.Register(grpcServer)

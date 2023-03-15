@@ -5,8 +5,9 @@ type UserService interface {
 	AdminRegister(AdminRegisterRequest) AdminRegisterResponse
 	Login(LoginRequest) LoginResponse
 	ListUser(ListUserRequest) ListUserResponse
-	EditUser(EditUserRequest) EditUserResponse
 	DeleteUser(DeleteUserRequest) DeleteUserResponse
+	EditUser(EditUserRequest) EditUserResponse
+	UpdateUser(UpdateUserRequest) UpdateUserResponse
 }
 
 type User struct {
@@ -76,3 +77,16 @@ type DeleteUserRequest struct {
 
 type DeleteUserResponse struct {
 }
+
+type UpdateUserRequest struct {
+	ID        int    `pb:"1"`
+	FirstName string `pb:"2"`
+	LastName  string `pb:"3"`
+	Username  string `pb:"4"`
+	Email     string `pb:"5"`
+	Password  string `pb:"6"`
+	IsActive  bool   `pb:"7"`
+	IsAdmin   bool   `pb:"8"`
+}
+
+type UpdateUserResponse struct{}

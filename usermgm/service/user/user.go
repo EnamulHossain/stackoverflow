@@ -2,7 +2,6 @@ package user
 
 import (
 	"context"
-	"fmt"
 
 	userpb "stackoverflow/gunk/v1/user"
 	"stackoverflow/usermgm/storage"
@@ -14,6 +13,8 @@ type CoreUser interface {
 	Login(storage.Login) (*storage.User, error)
 	ListUser() ([]storage.User, error)
 	DeleteUser(id int32) error
+	GetUserByID(id int32) (*storage.User, error)
+	UpdateUser(u storage.User) (*storage.User, error)
 }
 
 type UserSvc struct {
@@ -26,7 +27,6 @@ func NewUserSvc(cu CoreUser) *UserSvc {
 		core: cu,
 	}
 }
-
 
 func (us UserSvc) Register(ctx context.Context, r *userpb.RegisterRequest) (*userpb.RegisterResponse, error) {
 	user := storage.User{
@@ -61,9 +61,6 @@ func (us UserSvc) Register(ctx context.Context, r *userpb.RegisterRequest) (*use
 	}, nil
 }
 
-
-
-
 func (us UserSvc) AdminRegister(ctx context.Context, r *userpb.AdminRegisterRequest) (*userpb.AdminRegisterResponse, error) {
 	user := storage.User{
 		FirstName: r.GetFirstName(),
@@ -91,12 +88,11 @@ func (us UserSvc) AdminRegister(ctx context.Context, r *userpb.AdminRegisterRequ
 			LastName:  u.LastName,
 			Username:  u.Username,
 			Email:     u.Email,
-			IsAdmin:   true,
 			IsActive:  true,
+			IsAdmin:   true,
 		},
 	}, nil
 }
-
 
 func (us UserSvc) Login(ctx context.Context, r *userpb.LoginRequest) (*userpb.LoginResponse, error) {
 	login := storage.Login{
@@ -124,6 +120,7 @@ func (us UserSvc) Login(ctx context.Context, r *userpb.LoginRequest) (*userpb.Lo
 			IsAdmin:   u.IsAdmin,
 		},
 	}, nil
+
 }
 
 func (us UserSvc) ListUser(ctx context.Context, req *userpb.ListUserRequest) (*userpb.ListUserResponse, error) {
@@ -132,7 +129,6 @@ func (us UserSvc) ListUser(ctx context.Context, req *userpb.ListUserRequest) (*u
 	if err != nil {
 		return nil, err
 	}
-	fmt.Println("..................", users)
 
 	list := make([]*userpb.User, len(users))
 	for i, u := range users {
@@ -147,8 +143,6 @@ func (us UserSvc) ListUser(ctx context.Context, req *userpb.ListUserRequest) (*u
 		}
 	}
 
-	fmt.Println("..................", list)
-
 	return &userpb.ListUserResponse{
 		Users: list,
 	}, nil
@@ -157,12 +151,57 @@ func (us UserSvc) ListUser(ctx context.Context, req *userpb.ListUserRequest) (*u
 
 func (us UserSvc) DeleteUser(ctx context.Context, req *userpb.DeleteUserRequest) (*userpb.DeleteUserResponse, error) {
 
-	fmt.Println("idin service", req.GetID())
-	err:= us.core.DeleteUser(req.GetID())
+	err := us.core.DeleteUser(req.GetID())
 
 	if err != nil {
-		return nil,err
+		return nil, err
 	}
-	
+
 	return &userpb.DeleteUserResponse{}, nil
+}
+
+func (us UserSvc) EditUser(ctx context.Context, r *userpb.EditUserRequest) (*userpb.EditUserResponse, error) {
+	res, err := us.core.GetUserByID(r.GetID())
+	if err != nil {
+		return nil, err
+	}
+
+	return &userpb.EditUserResponse{
+		User: &userpb.User{
+			ID:        int32(res.ID),
+			FirstName: res.FirstName,
+			LastName:  res.LastName,
+			Username:  res.Username,
+			Email:     res.Email,
+			IsActive:  res.IsActive,
+			IsAdmin:   res.IsAdmin,
+		},
+	}, err
+
+}
+
+func (us UserSvc) UpdateUser(ctx context.Context, r *userpb.UpdateUserRequest) (*userpb.UpdateUserResponse, error) {
+
+	user := storage.User{
+		ID:        int(r.GetID()),
+		FirstName: r.GetFirstName(),
+		LastName:  r.GetLastName(),
+		Email:     r.GetEmail(),
+		Username:  r.GetUsername(),
+		Password:  r.GetPassword(),
+		IsActive:  r.GetIsActive(),
+		IsAdmin:   r.GetIsAdmin(),
+	}
+
+	if err := user.Validate(); err != nil {
+		return nil, err
+	}
+
+	_, err := us.core.UpdateUser(user)
+	if err != nil {
+		return nil, err
+	}
+
+	return &userpb.UpdateUserResponse{}, nil
+
 }

@@ -14,6 +14,8 @@ type UserStore interface {
 	ListUser() ([]storage.User, error)
 	DeleteUser(id int32) error
 	AdminRegister(u storage.User) (*storage.User, error)
+	GetUserByID(id int32) (*storage.User, error)
+	UpdateUser(u storage.User) (*storage.User, error)
 }
 
 type CoreUser struct {
@@ -75,6 +77,9 @@ func (cu CoreUser) Login(l storage.Login) (*storage.User, error) {
 		return nil, err
 	}
 
+	fmt.Printf("####################")
+	fmt.Println(u.IsAdmin)
+
 	if err := bcrypt.CompareHashAndPassword([]byte(u.Password), []byte(l.Password)); err != nil {
 		return nil, err
 	}
@@ -91,12 +96,44 @@ func (cu CoreUser) ListUser() ([]storage.User, error) {
 }
 
 func (cu CoreUser) DeleteUser(id int32) error{
-	fmt.Println("id in core ", id)
 	err := cu.store.DeleteUser(id)
 	if err != nil {
-		fmt.Println("errrrrrrrrrrrrrr", err)
 		return err
 	}
 
 	return nil
+}
+
+func (cu CoreUser) GetUserByID(id int32) (*storage.User, error) {
+	user, err := cu.store.GetUserByID(id)
+	if err != nil {
+		fmt.Println("errrrrrrrrrrrrrr", err)
+		return user,err
+	}
+
+	return user, err
+}
+
+
+
+func (cu CoreUser) UpdateUser(u storage.User) (*storage.User, error) {
+	hashPass, err := bcrypt.GenerateFromPassword([]byte(u.Password), bcrypt.DefaultCost)
+	if err != nil {
+		return nil, err
+	}
+
+	u.Password = string(hashPass)
+
+
+	user, err := cu.store.UpdateUser(u)
+	if err != nil {
+		return nil,err
+	}
+
+	if user == nil {
+		return nil, fmt.Errorf("unable to register")
+	}
+
+	return user, err
+
 }

@@ -48,7 +48,7 @@ type Login struct {
 	Password string
 }
 
-func (l Login) Validate() error  {
+func (l Login) Validate() error {
 	return validation.ValidateStruct(&l,
 		validation.Field(&l.Username,
 			validation.Required.Error("The username field is required."),
@@ -59,9 +59,23 @@ func (l Login) Validate() error  {
 	)
 }
 
-
-
 type UserFilter struct {
 	SearchTerm string
-	ListUser []User
+	ListUser   []User
+}
+
+type Category struct {
+	ID        int          `json:"id" form:"-" db:"id"`
+	Name      string       `json:"name" db:"name"`
+	CreatedAt time.Time    `json:"created_at" db:"created_at"`
+	UpdatedAt time.Time    `json:"updated_at" db:"updated_at"`
+	DeletedAt sql.NullTime `json:"deleted_at" db:"deleted_at"`
+}
+
+func (c Category) Validate() error {
+	return validation.ValidateStruct(&c,
+		validation.Field(&c.Name,
+			validation.Required.Error("The name field is required."),
+		),
+	)
 }

@@ -130,3 +130,42 @@ func (s PostgresStorage) DeleteUser(id int32) error {
 
 	return nil
 }
+
+const getUserByID = `SELECT * FROM users WHERE id=$1 AND deleted_at IS NULL`
+
+func (s PostgresStorage) GetUserByID(id int32) (*storage.User, error) {
+	var u storage.User
+	if err := s.DB.Get(&u, getUserByID, id); err != nil {
+		log.Println(err)
+		return nil, err
+	}
+
+	return &u, nil
+}
+
+const UserUpdate = `
+UPDATE
+	users
+SET
+	first_name = :first_name,
+	last_name = :last_name,
+	username = :username,
+	email = :email,
+	password = :password,
+	is_active = :is_active,
+	is_admin = :is_admin
+	WHERE id = :id AND deleted_at IS NULL RETURNING *;`
+
+func (s PostgresStorage) UpdateUser(u storage.User) (*storage.User, error) {
+	stmt, err := s.DB.PrepareNamed(UserUpdate)
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	if err := stmt.Get(&u, u); err != nil {
+		log.Fatal(err)
+		return nil, err
+	}
+
+	return &u, nil
+}

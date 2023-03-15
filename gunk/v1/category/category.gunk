@@ -1,0 +1,50 @@
+package categorypb
+
+type CategoryService interface {
+	CreateCategory(CreateCategoryRequest) CreateCategoryResponse
+	ListCategory(ListCategoryRequest) ListCategoryResponse
+	DeleteCategory(DeleteCategoryRequest) DeleteCategoryResponse
+	EditCategory(EditCategoryRequest) EditCategoryResponse
+	UpdateCategory(UpdateCategoryRequest) UpdateCategoryResponce
+}
+
+type Category struct {
+	ID   int    `pb:"1"`
+	Name string `pb:"2"`
+}
+
+type CreateCategoryRequest struct {
+	Name string `pb:"1"`
+}
+
+type CreateCategoryResponse struct {
+	Category Category `pb:"1"`
+}
+
+type ListCategoryRequest struct{}
+
+type ListCategoryResponse struct {
+	Categorys []Category `pb:"1"`
+}
+
+type DeleteCategoryRequest struct {
+	ID int `pb:"1"`
+}
+
+type DeleteCategoryResponse struct {
+}
+
+type EditCategoryRequest struct {
+	ID int `pb:"1"`
+}
+
+type EditCategoryResponse struct {
+	Category Category `pb:"1"`
+}
+
+type UpdateCategoryRequest struct {
+	ID   int    `pb:"1"`
+	Name string `pb:"2"`
+}
+
+type UpdateCategoryResponce struct{}

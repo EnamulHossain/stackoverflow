@@ -13,12 +13,14 @@ import (
 )
 
 type RegisterUser struct {
+	ID int32
 	FirstName string
 	LastName  string
 	Email     string
 	Username  string
 	Password  string
 	IsActive  bool
+	IsAdmin  bool
 }
 
 func (u RegisterUser) Validate() error {
