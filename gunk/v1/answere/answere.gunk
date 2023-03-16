@@ -1,1 +1,55 @@
 package answerepb
+
+type AnswereService interface {
+	AnswereCreate(AnswereCreateRequest) AnswereCreateResponse
+	AnswereList(AnswereListRequest) AnswereListResponse
+	AnswereDelete(AnswereDeleteRequest) AnswereDeleteResponse
+	AnswereEdit(AnswereEditRequest) AnswereEditResponse
+	AnswereUpdate(AnswereUpdateRequest) AnswereUpdateResponse
+}
+
+type Answere struct {
+	ID         int    `pb:"1"`
+	UserId     int    `pb:"2"`
+	QuestionId int    `pb:"3"`
+	Answere    string `pb:"4"`
+	IsCorrect  bool   `pb:"5"`
+}
+
+type AnswereCreateRequest struct {
+	UserId     int    `pb:"1"`
+	QuestionId int    `pb:"2"`
+	Answere    string `pb:"3"`
+}
+
+type AnswereCreateResponse struct {
+	Answere Answere `pb:"1"`
+}
+
+type AnswereListRequest struct{}
+
+type AnswereListResponse struct {
+	Answere []Answere `pb:"1"`
+}
+
+type AnswereDeleteRequest struct {
+	ID int `pb:"1"`
+}
+
+type AnswereDeleteResponse struct {
+}
+
+type AnswereEditRequest struct {
+	ID int `pb:"1"`
+}
+
+type AnswereEditResponse struct {
+	Answere Answere `pb:"1"`
+}
+
+type AnswereUpdateRequest struct {
+	ID      int    `pb:"1"`
+	Answere string `pb:"2"`
+}
+
+type AnswereUpdateResponse struct{}

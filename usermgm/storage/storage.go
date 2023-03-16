@@ -103,8 +103,8 @@ func (q Question) Validate() error {
 type Answere struct {
 	ID         int          `json:"id" form:"-" db:"id"`
 	UserId     int          `json:"user_id" db:"user_id"`
-	QuestionId string       `json:"question_id" db:"question_id"`
-	Answere    int          `json:"answere" db:"answere"`
+	QuestionId int          `json:"question_id" db:"question_id"`
+	Answere    string       `json:"answere" db:"answere"`
 	IsCorrect  bool         `json:"is_correct" db:"is_correct"`
 	CreatedAt  time.Time    `json:"created_at" db:"created_at"`
 	UpdatedAt  time.Time    `json:"updated_at" db:"updated_at"`

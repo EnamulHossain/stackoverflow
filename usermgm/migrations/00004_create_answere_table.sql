@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS answere (
     user_id INT NOT NULL,
     question_id INT NOT NULL,
     answere text NOT NULL,
-    is_correct BOOLEAN NOT NULL,
+    is_correct BOOLEAN  DEFAULT FALSE,
 	created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
 	updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
 	deleted_at TIMESTAMPTZ DEFAULT NULL,

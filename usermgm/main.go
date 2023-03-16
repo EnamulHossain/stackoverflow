@@ -10,12 +10,15 @@ import (
 	categorypb "stackoverflow/gunk/v1/category"
 	userpb "stackoverflow/gunk/v1/user"
 	questionpb "stackoverflow/gunk/v1/question"
+	answerepb "stackoverflow/gunk/v1/answere"
 	cc "stackoverflow/usermgm/core/category"
 	cq "stackoverflow/usermgm/core/question"
 	cu "stackoverflow/usermgm/core/user"
+	ca "stackoverflow/usermgm/core/answere"
 	"stackoverflow/usermgm/service/category"
 	"stackoverflow/usermgm/service/question"
 	"stackoverflow/usermgm/service/user"
+	"stackoverflow/usermgm/service/answere"
 	"stackoverflow/usermgm/storage/postgres"
 
 	"github.com/pressly/goose/v3"
@@ -75,6 +78,10 @@ func main() {
 	questionSvc := question.NewQuestionSvc(questionCore)
 	questionpb.RegisterQuestionServiceServer(grpcServer,questionSvc)
 
+
+	answereCore := ca.NewCoreAnswere(postgreStorage)
+	answereSvc := answere.NewAnswereSvc(answereCore)
+	answerepb.RegisterAnswereServiceServer(grpcServer,answereSvc)
 
 	// start reflection server
 	reflection.Register(grpcServer)
