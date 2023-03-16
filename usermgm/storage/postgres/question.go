@@ -9,10 +9,12 @@ import (
 
 
 const CreateQuestion = `INSERT INTO question (
+	user_id,
 	category_id,
 	title,
 	description
 ) VALUES(
+	:user_id,
 	:category_id,
 	:title,
 	:description

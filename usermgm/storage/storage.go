@@ -82,6 +82,7 @@ func (c Category) Validate() error {
 
 type Question struct {
 	ID          int          `json:"id" form:"-" db:"id"`
+	UserId      int          `json:"user_id" db:"user_id"`
 	CategoryId  int          `json:"category_id" db:"category_id"`
 	Title       string       `json:"title" db:"title"`
 	Description string       `json:"description" db:"description"`
@@ -95,6 +96,25 @@ func (q Question) Validate() error {
 	return validation.ValidateStruct(&q,
 		validation.Field(&q.Title,
 			validation.Required.Error("The Title field is required."),
+		),
+	)
+}
+
+type Answere struct {
+	ID         int          `json:"id" form:"-" db:"id"`
+	UserId     int          `json:"user_id" db:"user_id"`
+	QuestionId string       `json:"question_id" db:"question_id"`
+	Answere    int          `json:"answere" db:"answere"`
+	IsCorrect  bool         `json:"is_correct" db:"is_correct"`
+	CreatedAt  time.Time    `json:"created_at" db:"created_at"`
+	UpdatedAt  time.Time    `json:"updated_at" db:"updated_at"`
+	DeletedAt  sql.NullTime `json:"deleted_at" db:"deleted_at"`
+}
+
+func (a Answere) Validate() error {
+	return validation.ValidateStruct(&a,
+		validation.Field(&a.Answere,
+			validation.Required.Error("The answere field is required."),
 		),
 	)
 }

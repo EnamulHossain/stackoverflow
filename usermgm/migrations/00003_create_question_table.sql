@@ -2,6 +2,7 @@
 -- +goose StatementBegin
 CREATE TABLE IF NOT EXISTS question (
     id BIGSERIAL PRIMARY KEY,
+    user_id INT NOT NULL,
     category_id INT NOT NULL,
     title TEXT NOT NULL,
     description TEXT NOT NULL,

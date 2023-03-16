@@ -14,13 +14,10 @@ type CoreQuestion interface {
 	QuestionUpdate(u storage.Question) (*storage.Question, error)
 }
 
-
-
 type QuestionSvc struct {
 	questionpb.UnimplementedQuestionServiceServer
 	core CoreQuestion
 }
-
 
 func NewQuestionSvc(cq CoreQuestion) *QuestionSvc {
 	return &QuestionSvc{
@@ -28,11 +25,9 @@ func NewQuestionSvc(cq CoreQuestion) *QuestionSvc {
 	}
 }
 
-
-
-
-func (qs QuestionSvc) CreateQuestion(ctx context.Context,r *questionpb.CreateQuestionRequest) (*questionpb.CreateQuestionResponse, error) {
+func (qs QuestionSvc) CreateQuestion(ctx context.Context, r *questionpb.CreateQuestionRequest) (*questionpb.CreateQuestionResponse, error) {
 	question := storage.Question{
+		UserId:      int(r.GetUserId()),
 		CategoryId:  int(r.GetCategoryId()),
 		Title:       r.Title,
 		Description: r.Description,
@@ -50,6 +45,7 @@ func (qs QuestionSvc) CreateQuestion(ctx context.Context,r *questionpb.CreateQue
 	return &questionpb.CreateQuestionResponse{
 		Question: &questionpb.Question{
 			ID:          int32(u.ID),
+			UserId:      int32(u.UserId),
 			CategoryId:  int32(u.CategoryId),
 			Title:       u.Title,
 			Description: u.Description,
@@ -57,7 +53,7 @@ func (qs QuestionSvc) CreateQuestion(ctx context.Context,r *questionpb.CreateQue
 	}, nil
 }
 
-func (qs QuestionSvc) ListQuestion(ctx context.Context,r *questionpb.ListQuestionRequest) (*questionpb.ListQuestionResponse, error) {
+func (qs QuestionSvc) ListQuestion(ctx context.Context, r *questionpb.ListQuestionRequest) (*questionpb.ListQuestionResponse, error) {
 
 	question, err := qs.core.ListQuestion()
 	if err != nil {
@@ -74,7 +70,7 @@ func (qs QuestionSvc) ListQuestion(ctx context.Context,r *questionpb.ListQuestio
 	}
 
 	return &questionpb.ListQuestionResponse{
-		Questions:  list,
+		Questions: list,
 	}, nil
 }
 
@@ -100,7 +96,7 @@ func (qs QuestionSvc) EditQuestion(ctx context.Context, r *questionpb.EditQuesti
 			Title:       res.Title,
 			Description: res.Description,
 		},
-	},err
+	}, err
 
 }
 
@@ -118,5 +114,5 @@ func (qs QuestionSvc) UpdateQuestion(ctx context.Context, r *questionpb.UpdateQu
 		return nil, err
 	}
 
-	return &questionpb.UpdateQuestionResponse{},nil
+	return &questionpb.UpdateQuestionResponse{}, nil
 }

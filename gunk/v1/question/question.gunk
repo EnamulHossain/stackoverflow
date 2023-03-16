@@ -11,16 +11,18 @@ type QuestionService interface {
 }
 
 type Question struct {
-	ID          int       `pb:"1"`
-	CategoryId  int       `pb:"2"`
-	Title       string    `pb:"3"`
-	Description string    `pb:"4"`
+	ID          int    `pb:"1"`
+	UserId  int    `pb:"2"`
+	CategoryId  int    `pb:"3"`
+	Title       string `pb:"4"`
+	Description string `pb:"5"`
 }
 
 type createQuestionRequest struct {
-	CategoryId  int    `pb:"1"`
-	Title       string `pb:"2"`
-	Description string `pb:"3"`
+	UserId      int    `pb:"1"`
+	CategoryId  int    `pb:"2"`
+	Title       string `pb:"3"`
+	Description string `pb:"4"`
 }
 
 type createQuestionResponse struct {
