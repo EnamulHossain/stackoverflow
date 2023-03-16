@@ -1,0 +1,57 @@
+package questionpb
+
+import "time"
+
+type QuestionService interface {
+	createQuestion(createQuestionRequest) createQuestionResponse
+	ListQuestion(ListQuestionRequest) ListQuestionResponse
+	DeleteQuestion(DeleteQuestionRequest) DeleteQuestionResponse
+	EditQuestion(EditQuestionRequest) EditQuestionResponse
+	UpdateQuestion(UpdateQuestionRequest) UpdateQuestionResponse
+}
+
+type Question struct {
+	ID          int       `pb:"1"`
+	CategoryId  int       `pb:"2"`
+	Title       string    `pb:"3"`
+	Description string    `pb:"4"`
+}
+
+type createQuestionRequest struct {
+	CategoryId  int    `pb:"1"`
+	Title       string `pb:"2"`
+	Description string `pb:"3"`
+}
+
+type createQuestionResponse struct {
+	Question Question `pb:"1"`
+}
+
+type ListQuestionRequest struct{}
+
+type ListQuestionResponse struct {
+	Questions []Question `pb:"1"`
+}
+
+type DeleteQuestionRequest struct {
+	ID int `pb:"1"`
+}
+
+type DeleteQuestionResponse struct {
+}
+
+type EditQuestionRequest struct {
+	ID int `pb:"1"`
+}
+
+type EditQuestionResponse struct {
+	Question Question `pb:"1"`
+}
+
+type UpdateQuestionRequest struct {
+	ID          int    `pb:"1"`
+	Title       string `pb:"2"`
+	Description string `pb:"3"`
+}
+
+type UpdateQuestionResponse struct{}

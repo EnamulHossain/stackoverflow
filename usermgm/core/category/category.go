@@ -8,7 +8,7 @@ import (
 type CategoryStore interface {
 	CreateCategory(storage.Category) (*storage.Category, error)
 	ListCategory() ([]storage.Category, error)
-	DeleteCategory(id int32) error 
+	DeleteCategory(id int32) error
 	GetCategoryByID(id int32) (*storage.Category, error)
 	UpdateCategory(u storage.Category) (*storage.Category, error)
 }
@@ -16,8 +16,6 @@ type CategoryStore interface {
 type CoreCategory struct {
 	store CategoryStore
 }
-
-
 
 func NewCoreCategory(us CategoryStore) *CoreCategory {
 	return &CoreCategory{
@@ -27,7 +25,7 @@ func NewCoreCategory(us CategoryStore) *CoreCategory {
 
 func (ca CoreCategory) CreateCategory(u storage.Category) (*storage.Category, error) {
 
-	cc,err := ca.store.CreateCategory(u)
+	cc, err := ca.store.CreateCategory(u)
 	if err != nil {
 		return nil, err
 	}
@@ -37,8 +35,6 @@ func (ca CoreCategory) CreateCategory(u storage.Category) (*storage.Category, er
 	return cc, nil
 }
 
-
-
 func (cc CoreCategory) ListCategory() ([]storage.Category, error) {
 
 	list, err := cc.store.ListCategory()
@@ -47,7 +43,6 @@ func (cc CoreCategory) ListCategory() ([]storage.Category, error) {
 	}
 	return list, nil
 }
-
 
 func (cc CoreCategory) DeleteCategory(id int32) error {
 	err := cc.store.DeleteCategory(id)
@@ -59,28 +54,25 @@ func (cc CoreCategory) DeleteCategory(id int32) error {
 	return nil
 }
 
-
-
 func (cu CoreCategory) GetCategoryByID(id int32) (*storage.Category, error) {
-	user, err := cu.store.GetCategoryByID(id)
+	
+	categories, err := cu.store.GetCategoryByID(id)
 	if err != nil {
-		return user,err
+		return categories, err
 	}
 
-	return user, err
+	return categories, err
 }
-
-
 
 func (cu CoreCategory) UpdateCategory(u storage.Category) (*storage.Category, error) {
 
 	categories, err := cu.store.UpdateCategory(u)
 	if err != nil {
-		return nil,err
+		return nil, err
 	}
 
 	if categories == nil {
-		return nil, fmt.Errorf("unable to register")
+		return nil, fmt.Errorf("unable to update")
 	}
 
 	return categories, err

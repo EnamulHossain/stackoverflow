@@ -9,9 +9,12 @@ import (
 
 	categorypb "stackoverflow/gunk/v1/category"
 	userpb "stackoverflow/gunk/v1/user"
-	cu "stackoverflow/usermgm/core/user"
+	questionpb "stackoverflow/gunk/v1/question"
 	cc "stackoverflow/usermgm/core/category"
+	cq "stackoverflow/usermgm/core/question"
+	cu "stackoverflow/usermgm/core/user"
 	"stackoverflow/usermgm/service/category"
+	"stackoverflow/usermgm/service/question"
 	"stackoverflow/usermgm/service/user"
 	"stackoverflow/usermgm/storage/postgres"
 
@@ -66,6 +69,12 @@ func main() {
 	categoryCore:= cc.NewCoreCategory(postgreStorage)
 	categorySvc :=category.NewCatrgorySvc(categoryCore)
 	categorypb.RegisterCategoryServiceServer(grpcServer,categorySvc)
+
+
+	questionCore:=cq.NewCoreQuestion(postgreStorage)
+	questionSvc := question.NewQuestionSvc(questionCore)
+	questionpb.RegisterQuestionServiceServer(grpcServer,questionSvc)
+
 
 	// start reflection server
 	reflection.Register(grpcServer)
