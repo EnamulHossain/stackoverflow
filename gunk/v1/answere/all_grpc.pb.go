@@ -23,6 +23,7 @@ type AnswereServiceClient interface {
 	AnswereDelete(ctx context.Context, in *AnswereDeleteRequest, opts ...grpc.CallOption) (*AnswereDeleteResponse, error)
 	AnswereEdit(ctx context.Context, in *AnswereEditRequest, opts ...grpc.CallOption) (*AnswereEditResponse, error)
 	AnswereUpdate(ctx context.Context, in *AnswereUpdateRequest, opts ...grpc.CallOption) (*AnswereUpdateResponse, error)
+	CorrectAnswere(ctx context.Context, in *CorrectAnswereRequest, opts ...grpc.CallOption) (*CorrectAnswereResponse, error)
 }
 
 type answereServiceClient struct {
@@ -78,6 +79,15 @@ func (c *answereServiceClient) AnswereUpdate(ctx context.Context, in *AnswereUpd
 	return out, nil
 }
 
+func (c *answereServiceClient) CorrectAnswere(ctx context.Context, in *CorrectAnswereRequest, opts ...grpc.CallOption) (*CorrectAnswereResponse, error) {
+	out := new(CorrectAnswereResponse)
+	err := c.cc.Invoke(ctx, "/answerepb.AnswereService/CorrectAnswere", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // AnswereServiceServer is the server API for AnswereService service.
 // All implementations must embed UnimplementedAnswereServiceServer
 // for forward compatibility
@@ -87,6 +97,7 @@ type AnswereServiceServer interface {
 	AnswereDelete(context.Context, *AnswereDeleteRequest) (*AnswereDeleteResponse, error)
 	AnswereEdit(context.Context, *AnswereEditRequest) (*AnswereEditResponse, error)
 	AnswereUpdate(context.Context, *AnswereUpdateRequest) (*AnswereUpdateResponse, error)
+	CorrectAnswere(context.Context, *CorrectAnswereRequest) (*CorrectAnswereResponse, error)
 	mustEmbedUnimplementedAnswereServiceServer()
 }
 
@@ -108,6 +119,9 @@ func (UnimplementedAnswereServiceServer) AnswereEdit(context.Context, *AnswereEd
 }
 func (UnimplementedAnswereServiceServer) AnswereUpdate(context.Context, *AnswereUpdateRequest) (*AnswereUpdateResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AnswereUpdate not implemented")
+}
+func (UnimplementedAnswereServiceServer) CorrectAnswere(context.Context, *CorrectAnswereRequest) (*CorrectAnswereResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CorrectAnswere not implemented")
 }
 func (UnimplementedAnswereServiceServer) mustEmbedUnimplementedAnswereServiceServer() {}
 
@@ -212,6 +226,24 @@ func _AnswereService_AnswereUpdate_Handler(srv interface{}, ctx context.Context,
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AnswereService_CorrectAnswere_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CorrectAnswereRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AnswereServiceServer).CorrectAnswere(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/answerepb.AnswereService/CorrectAnswere",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AnswereServiceServer).CorrectAnswere(ctx, req.(*CorrectAnswereRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // AnswereService_ServiceDesc is the grpc.ServiceDesc for AnswereService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -238,6 +270,10 @@ var AnswereService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "AnswereUpdate",
 			Handler:    _AnswereService_AnswereUpdate_Handler,
+		},
+		{
+			MethodName: "CorrectAnswere",
+			Handler:    _AnswereService_CorrectAnswere_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

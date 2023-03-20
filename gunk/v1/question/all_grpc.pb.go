@@ -23,6 +23,7 @@ type QuestionServiceClient interface {
 	DeleteQuestion(ctx context.Context, in *DeleteQuestionRequest, opts ...grpc.CallOption) (*DeleteQuestionResponse, error)
 	EditQuestion(ctx context.Context, in *EditQuestionRequest, opts ...grpc.CallOption) (*EditQuestionResponse, error)
 	UpdateQuestion(ctx context.Context, in *UpdateQuestionRequest, opts ...grpc.CallOption) (*UpdateQuestionResponse, error)
+	PublishedQuestion(ctx context.Context, in *PublishedQuestionRequest, opts ...grpc.CallOption) (*PublishedQuestionResponse, error)
 }
 
 type questionServiceClient struct {
@@ -78,6 +79,15 @@ func (c *questionServiceClient) UpdateQuestion(ctx context.Context, in *UpdateQu
 	return out, nil
 }
 
+func (c *questionServiceClient) PublishedQuestion(ctx context.Context, in *PublishedQuestionRequest, opts ...grpc.CallOption) (*PublishedQuestionResponse, error) {
+	out := new(PublishedQuestionResponse)
+	err := c.cc.Invoke(ctx, "/questionpb.QuestionService/PublishedQuestion", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // QuestionServiceServer is the server API for QuestionService service.
 // All implementations must embed UnimplementedQuestionServiceServer
 // for forward compatibility
@@ -87,6 +97,7 @@ type QuestionServiceServer interface {
 	DeleteQuestion(context.Context, *DeleteQuestionRequest) (*DeleteQuestionResponse, error)
 	EditQuestion(context.Context, *EditQuestionRequest) (*EditQuestionResponse, error)
 	UpdateQuestion(context.Context, *UpdateQuestionRequest) (*UpdateQuestionResponse, error)
+	PublishedQuestion(context.Context, *PublishedQuestionRequest) (*PublishedQuestionResponse, error)
 	mustEmbedUnimplementedQuestionServiceServer()
 }
 
@@ -108,6 +119,9 @@ func (UnimplementedQuestionServiceServer) EditQuestion(context.Context, *EditQue
 }
 func (UnimplementedQuestionServiceServer) UpdateQuestion(context.Context, *UpdateQuestionRequest) (*UpdateQuestionResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateQuestion not implemented")
+}
+func (UnimplementedQuestionServiceServer) PublishedQuestion(context.Context, *PublishedQuestionRequest) (*PublishedQuestionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PublishedQuestion not implemented")
 }
 func (UnimplementedQuestionServiceServer) mustEmbedUnimplementedQuestionServiceServer() {}
 
@@ -212,6 +226,24 @@ func _QuestionService_UpdateQuestion_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _QuestionService_PublishedQuestion_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PublishedQuestionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QuestionServiceServer).PublishedQuestion(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/questionpb.QuestionService/PublishedQuestion",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QuestionServiceServer).PublishedQuestion(ctx, req.(*PublishedQuestionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // QuestionService_ServiceDesc is the grpc.ServiceDesc for QuestionService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -238,6 +270,10 @@ var QuestionService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UpdateQuestion",
 			Handler:    _QuestionService_UpdateQuestion_Handler,
+		},
+		{
+			MethodName: "PublishedQuestion",
+			Handler:    _QuestionService_PublishedQuestion_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

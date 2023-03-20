@@ -104,7 +104,34 @@ SET
 	WHERE id = :id AND deleted_at IS NULL RETURNING *;`
 
 func (s PostgresStorage) QuestionUpdate(u storage.Question) (*storage.Question, error) {
+
 	stmt, err := s.DB.PrepareNamed(QuestionUpdate)
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	if err := stmt.Get(&u, u); err != nil {
+		log.Fatal(err)
+		return nil, err
+	}
+
+	return &u, nil
+}
+
+
+
+
+
+const QuestionPublished = `
+UPDATE
+question
+SET
+	published_at	 = now()
+
+	WHERE id = :id AND deleted_at IS NULL RETURNING *;`
+
+func (s PostgresStorage) QuestionPublished(u storage.Question) (*storage.Question, error) {
+	stmt, err := s.DB.PrepareNamed(QuestionPublished)
 	if err != nil {
 		log.Fatalln(err)
 	}

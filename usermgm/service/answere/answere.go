@@ -13,6 +13,8 @@ type CoreAnswere interface {
 	DeleteAnswere(id int32) error
 	GetAnswereByID(id int32) (*storage.Answere, error)
 	AnswereUpdate(u storage.Answere) (*storage.Answere, error)
+
+	CorrectAnswere(u storage.Answere) (*storage.Answere, error)
 }
 
 type AnswereSvc struct {
@@ -68,14 +70,14 @@ func (as AnswereSvc) AnswereList(ctx context.Context, r *answerepb.AnswereListRe
 			Answere:    q.Answere,
 			IsCorrect:  q.IsCorrect,
 		}
-		}
+	}
 
 	return &answerepb.AnswereListResponse{
 		Answere: list,
 	}, nil
 }
 
-func (as AnswereSvc) AnswereDelete(ctx context.Context, r *answerepb.AnswereDeleteRequest) (*answerepb.AnswereDeleteResponse, error){
+func (as AnswereSvc) AnswereDelete(ctx context.Context, r *answerepb.AnswereDeleteRequest) (*answerepb.AnswereDeleteResponse, error) {
 	err := as.core.DeleteAnswere(r.GetID())
 
 	if err != nil {
@@ -97,13 +99,13 @@ func (as AnswereSvc) AnswereEdit(ctx context.Context, r *answerepb.AnswereEditRe
 			QuestionId: int32(res.QuestionId),
 			Answere:    res.Answere,
 		},
-	},err
+	}, err
 }
 
 func (as AnswereSvc) AnswereUpdate(ctx context.Context, r *answerepb.AnswereUpdateRequest) (*answerepb.AnswereUpdateResponse, error) {
 	answere := storage.Answere{
-		ID:         int(r.GetID()),
-		Answere:    r.Answere,
+		ID:      int(r.GetID()),
+		Answere: r.Answere,
 	}
 	// if err := answere.Validate(); err != nil {
 	// 	return nil, err
@@ -114,4 +116,33 @@ func (as AnswereSvc) AnswereUpdate(ctx context.Context, r *answerepb.AnswereUpda
 	}
 
 	return &answerepb.AnswereUpdateResponse{}, nil
+}
+
+func (as AnswereSvc) CorrectAnswere(ctx context.Context, r *answerepb.CorrectAnswereRequest) (*answerepb.CorrectAnswereResponse, error) {
+
+	cans := storage.Answere{
+		ID:        int(r.GetID()),
+		IsCorrect: false,
+	}
+
+	corretans := storage.Answere{
+		ID:        int(r.GetID()),
+		IsCorrect: true,
+	}
+
+	if r.IsCorrect == true {
+		_, err := as.core.CorrectAnswere(cans)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	if r.IsCorrect == false {
+		_, err := as.core.CorrectAnswere(corretans)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	return &answerepb.CorrectAnswereResponse{}, nil
 }

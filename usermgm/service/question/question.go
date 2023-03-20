@@ -2,6 +2,7 @@ package question
 
 import (
 	"context"
+	"database/sql"
 	questionpb "stackoverflow/gunk/v1/question"
 	"stackoverflow/usermgm/storage"
 )
@@ -12,6 +13,7 @@ type CoreQuestion interface {
 	DeleteQuestion(id int32) error
 	GetQuestionByID(id int32) (*storage.Question, error)
 	QuestionUpdate(u storage.Question) (*storage.Question, error)
+	QuestionPublished(u storage.Question) (*storage.Question, error)
 }
 
 type QuestionSvc struct {
@@ -115,4 +117,22 @@ func (qs QuestionSvc) UpdateQuestion(ctx context.Context, r *questionpb.UpdateQu
 	}
 
 	return &questionpb.UpdateQuestionResponse{}, nil
+}
+
+func (qs QuestionSvc) PublishedQuestion(ctx context.Context, r *questionpb.PublishedQuestionRequest) (*questionpb.PublishedQuestionResponse, error) {
+
+	publishQuestion := storage.Question{
+		ID:          int(r.GetID()),
+		PublishedAt: sql.NullTime{
+			Time:  r.PublishedAt.AsTime(),
+			Valid: false,
+		},
+	}
+
+	_, err := qs.core.QuestionPublished(publishQuestion)
+	if err != nil {
+		return nil, err
+	}
+
+	return &questionpb.PublishedQuestionResponse{}, nil
 }

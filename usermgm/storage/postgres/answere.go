@@ -114,3 +114,29 @@ func (s PostgresStorage) AnswereUpdate(u storage.Answere) (*storage.Answere, err
 
 	return &u, nil
 }
+
+
+
+
+
+const correctanswere = `
+UPDATE
+answere
+SET
+	is_correct = :is_correct
+
+	WHERE id = :id AND deleted_at IS NULL RETURNING *;`
+
+func (s PostgresStorage) CorrectAnswere(u storage.Answere) (*storage.Answere, error) {
+	stmt, err := s.DB.PrepareNamed(correctanswere)
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	if err := stmt.Get(&u, u); err != nil {
+		log.Fatal(err)
+		return nil, err
+	}
+
+	return &u, nil
+}

@@ -11,6 +11,8 @@ type QuestionStore interface {
 	DeleteQuestion(id int32) error
 	GetQuestionByID(id int32) (*storage.Question, error)
 	QuestionUpdate(u storage.Question) (*storage.Question, error)
+
+	QuestionPublished(u storage.Question) (*storage.Question, error)
 }
 
 type CoreQuestion struct {
@@ -76,4 +78,22 @@ func (cq CoreQuestion) QuestionUpdate(u storage.Question) (*storage.Question, er
 	}
 
 	return question, err
+}
+
+
+func (cq CoreQuestion) QuestionPublished(u storage.Question) (*storage.Question, error) {
+
+
+	questions, err := cq.store.QuestionPublished(u)
+	if err != nil {
+		return nil, err
+	}
+
+	if questions == nil {
+		return nil, fmt.Errorf("unable to update")
+	}
+
+	return questions, err
+
+
 }

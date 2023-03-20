@@ -8,6 +8,8 @@ type QuestionService interface {
 	DeleteQuestion(DeleteQuestionRequest) DeleteQuestionResponse
 	EditQuestion(EditQuestionRequest) EditQuestionResponse
 	UpdateQuestion(UpdateQuestionRequest) UpdateQuestionResponse
+
+	PublishedQuestion(PublishedQuestionRequest) PublishedQuestionResponse
 }
 
 type Question struct {
@@ -57,3 +59,10 @@ type UpdateQuestionRequest struct {
 }
 
 type UpdateQuestionResponse struct{}
+
+type PublishedQuestionRequest struct {
+	ID          int       `pb:"1"`
+	PublishedAt time.Time `pb:"2"`
+}
+
+type PublishedQuestionResponse struct{}

@@ -11,6 +11,8 @@ type AnswereStore interface {
 	DeleteAnswere(id int32) error
 	GetAnswereByID(id int32) (*storage.Answere, error)
 	AnswereUpdate(u storage.Answere) (*storage.Answere, error)
+
+	CorrectAnswere(u storage.Answere) (*storage.Answere, error)
 }
 
 type CoreAnswere struct {
@@ -77,4 +79,23 @@ func (ca CoreAnswere) AnswereUpdate(u storage.Answere) (*storage.Answere, error)
 	}
 
 	return answere, err
+}
+
+
+
+func (ca CoreAnswere) CorrectAnswere(u storage.Answere) (*storage.Answere, error) {
+
+
+	answere, err := ca.store.CorrectAnswere(u)
+	if err != nil {
+		return nil, err
+	}
+
+	if answere == nil {
+		return nil, fmt.Errorf("unable to update")
+	}
+
+	return answere, err
+
+
 }
