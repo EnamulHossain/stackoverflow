@@ -13,14 +13,14 @@ import (
 )
 
 type RegisterUser struct {
-	ID int32
+	ID        int32
 	FirstName string
 	LastName  string
 	Email     string
 	Username  string
 	Password  string
 	IsActive  bool
-	IsAdmin  bool
+	IsAdmin   bool
 }
 
 func (u RegisterUser) Validate() error {
@@ -89,6 +89,55 @@ func (h Handler) RegisterPost(w http.ResponseWriter, r *http.Request) {
 		Password:  ru.Password,
 		IsActive:  ru.IsActive,
 		IsAdmin:   false,
+	})
+	if err != nil {
+		log.Println(err)
+		http.Error(w, "internal server error", http.StatusInternalServerError)
+		return
+	}
+
+	http.Redirect(w, r, "/login", http.StatusSeeOther)
+}
+
+func (h Handler) AdminReg(w http.ResponseWriter, r *http.Request) {
+	h.pareseAdminRegTemplate(w, RegisterUserForm{
+		CSRFToken: nosurf.Token(r),
+	})
+}
+
+func (h Handler) AdminRegisterPost(w http.ResponseWriter, r *http.Request) {
+	if err := r.ParseForm(); err != nil {
+		log.Println(err)
+		http.Error(w, "internal server error", http.StatusInternalServerError)
+		return
+	}
+	form := RegisterUserForm{}
+	ru := RegisterUser{}
+	if err := h.decoder.Decode(&ru, r.PostForm); err != nil {
+		log.Println(err)
+		http.Error(w, "internal server error", http.StatusInternalServerError)
+		return
+	}
+
+	form.RegisterUser = ru
+	if err := ru.Validate(); err != nil {
+		if vErr, ok := err.(validation.Errors); ok {
+			for key, val := range vErr {
+				form.FormError[strings.Title(key)] = val
+			}
+		}
+		h.pareseAdminRegTemplate(w, form)
+		return
+	}
+
+	_, err := h.usermgmSvc.AdminRegister(r.Context(), &userpb.AdminRegisterRequest{
+		FirstName: ru.FirstName,
+		LastName:  ru.LastName,
+		Username:  ru.Username,
+		Email:     ru.Email,
+		Password:  ru.Password,
+		IsActive:  ru.IsActive,
+		IsAdmin:   true,
 	})
 	if err != nil {
 		log.Println(err)

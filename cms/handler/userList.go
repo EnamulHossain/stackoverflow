@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"fmt"
 	"net/http"
 	userpb "stackoverflow/gunk/v1/user"
 )
@@ -22,8 +21,12 @@ type User struct{
 	IsActive  bool        
 	IsAdmin   bool        
 }
+
+// type UserTempData struct {
+// 	UserData PublicTempData
+// }
+
 func (c Handler) ListUser(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("request handler")
 	res, err := c.usermgmSvc.ListUser(r.Context(), &userpb.ListUserRequest{})
 	if err!=nil {
 		http.Error(w,"Internal Server Error", http.StatusInternalServerError)

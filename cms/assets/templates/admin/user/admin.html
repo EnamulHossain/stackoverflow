@@ -1,0 +1,253 @@
+{{template "header.html"}}
+
+
+<script>
+    StackExchange.ready(function () { StackExchange.topbar.init(); });
+    StackExchange.scrollPadding.setPaddingTop(50, 10); 
+</script>
+
+
+<div class="mx-auto  d-flex ai-center sm:fd-column">
+    <div class="flex--item fs-body2 mr48 mb128 wmx4 md:d-none m-4">
+        <h1 class="fs-headline1 mb32 lh-xs">Join the Stack Overflow community</h1>
+        <div class="d-flex mb24">
+            <div class="flex--item fc-blue-500 mr8">
+                <svg width="26" height="26" class="svg-icon mtn2">
+                    <path opacity=".5" d="M4.2 4H22a2 2 0 012 2v11.8a3 3 0 002-2.8V5a3 3 0 00-3-3H7a3 3 0 00-2.8 2z" />
+                    <path
+                        d="M1 7c0-1.1.9-2 2-2h18a2 2 0 012 2v12a2 2 0 01-2 2h-2v5l-5-5H3a2 2 0 01-2-2V7zm10.6 11.3c.7 0 1.2-.5 1.2-1.2s-.5-1.2-1.2-1.2c-.6 0-1.2.4-1.2 1.2 0 .7.5 1.1 1.2 1.2zm2.2-5.4l1-.9c.3-.4.4-.9.4-1.4 0-1-.3-1.7-1-2.2-.6-.5-1.4-.7-2.4-.7-.8 0-1.4.2-2 .5-.7.5-1 1.4-1 2.8h1.9v-.1c0-.4 0-.7.2-1 .2-.4.5-.6 1-.6s.8.1 1 .4a1.3 1.3 0 010 1.8l-.4.3-1.4 1.3c-.3.4-.4 1-.4 1.6 0 0 0 .2.2.2h1.5c.2 0 .2-.1.2-.2l.1-.7.5-.7.6-.4z" />
+                </svg>
+            </div>
+            <div class="flex--item">Get unstuck &#x2014; ask a question</div>
+        </div>
+        <div class="d-flex mb24">
+            <div class="flex--item fc-blue-500 mr8">
+                <svg width="26" height="26" class="svg-icon mtn2">
+                    <path d="M12 .7a2 2 0 013 0l8.5 9.6a1 1 0 01-.7 1.7H4.2a1 1 0 01-.7-1.7L12 .7z" />
+                    <path opacity=".5"
+                        d="M20.6 16H6.4l7.1 8 7-8zM15 25.3a2 2 0 01-3 0l-8.5-9.6a1 1 0 01.7-1.7h18.6a1 1 0 01.7 1.7L15 25.3z" />
+                </svg>
+            </div>
+            <div class="flex--item">Unlock new privileges like voting and commenting</div>
+        </div>
+        <div class="d-flex mb24">
+            <div class="flex--item fc-blue-500 mr8">
+                <svg width="26" height="26" class="svg-icon mtn2">
+                    <path
+                        d="M14.8 3a2 2 0 00-1.4.6l-10 10a2 2 0 000 2.8l8.2 8.2c.8.8 2 .8 2.8 0l10-10c.4-.4.6-.9.6-1.4V5a2 2 0 00-2-2h-8.2zm5.2 7a2 2 0 110-4 2 2 0 010 4z" />
+                    <path opacity=".5"
+                        d="M13 0a2 2 0 00-1.4.6l-10 10a2 2 0 000 2.8c.1-.2.3-.6.6-.8l10-10a2 2 0 011.4-.6h9.6a2 2 0 00-2-2H13z" />
+                </svg>
+            </div>
+            <div class="flex--item">Save your favorite tags, filters, and jobs</div>
+        </div>
+        <div class="d-flex mb24">
+            <div class="flex--item fc-blue-500 mr8">
+                <svg width="26" height="26" class="svg-icon mtn2">
+                    <path
+                        d="M21 4V2H5v2H1v5c0 2 2 4 4 4v1c0 2.5 3 4 7 4v3H7s-1.2 2.3-1.2 3h14.4c0-.6-1.2-3-1.2-3h-5v-3c4 0 7-1.5 7-4v-1c2 0 4-2 4-4V4h-4zM5 11c-1 0-2-1-2-2V6h2v5zm11.5 2.7l-3.5-2-3.5 1.9L11 9.8 7.2 7.5h4.4L13 3.8l1.4 3.7h4L15.3 10l1.4 3.7h-.1zM23 9c0 1-1 2-2 2V6h2v3z" />
+                </svg>
+            </div>
+            <div class="flex--item">Earn reputation and badges</div>
+        </div>
+        <div class="fs-body1 fc-light">
+            Collaborate and share knowledge with a private group for FREE.<br>
+            <a href='https://stackoverflow.com/teams?utm_source=so-owned&utm_medium=product&utm_campaign=free-50&utm_content=public-sign-up'
+                target='_blank'>Get Stack Overflow for Teams free for up to 50 users</a>.
+        </div>
+    </div>
+    <div class="flex--item fl-shrink0">
+
+        <div class="wmx4 ta-center fs-title mx-auto mb24 d-none md:d-block">
+            Create your Stack Overflow account. It&#x2019;s free and only takes a minute. </div>
+
+
+
+
+        <div id="openid-buttons" class="mx-auto d-flex flex__fl-grow1 fd-column gs8 gsy mb16 wmx3">
+            <button class="flex--item s-btn s-btn__icon s-btn__google bar-md ba bc-black-100" data-provider='google'
+                data-oauthserver='https://accounts.google.com/o/oauth2/auth' data-oauthversion='2.0'>
+                <svg aria-hidden="true" class="native svg-icon iconGoogle" width="18" height="18" viewBox="0 0 18 18">
+                    <path fill="#4285F4"
+                        d="M16.51 8H8.98v3h4.3c-.18 1-.74 1.48-1.6 2.04v2.01h2.6a7.8 7.8 0 0 0 2.38-5.88c0-.57-.05-.66-.15-1.18Z" />
+                    <path fill="#34A853"
+                        d="M8.98 17c2.16 0 3.97-.72 5.3-1.94l-2.6-2a4.8 4.8 0 0 1-7.18-2.54H1.83v2.07A8 8 0 0 0 8.98 17Z" />
+                    <path fill="#FBBC05" d="M4.5 10.52a4.8 4.8 0 0 1 0-3.04V5.41H1.83a8 8 0 0 0 0 7.18l2.67-2.07Z" />
+                    <path fill="#EA4335"
+                        d="M8.98 4.18c1.17 0 2.23.4 3.06 1.2l2.3-2.3A8 8 0 0 0 1.83 5.4L4.5 7.49a4.77 4.77 0 0 1 4.48-3.3Z" />
+                </svg>
+                Sign up with Google </button>
+            <button class="flex--item s-btn s-btn__icon s-btn__github bar-md ba bc-black-100" data-provider='github'
+                data-oauthserver='https://github.com/login/oauth/authorize' data-oauthversion='2.0'>
+                <svg aria-hidden="true" class="svg-icon iconGitHub" width="18" height="18" viewBox="0 0 18 18">
+                    <path fill="#010101"
+                        d="M9 1a8 8 0 0 0-2.53 15.59c.4.07.55-.17.55-.38l-.01-1.49c-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.42 7.42 0 0 1 4 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48l-.01 2.2c0 .21.15.46.55.38A8.01 8.01 0 0 0 9 1Z" />
+                </svg>
+                Sign up with GitHub </button>
+            <button class="flex--item s-btn s-btn__icon s-btn__facebook bar-md" data-provider='facebook'
+                data-oauthserver='https://www.facebook.com/v2.0/dialog/oauth' data-oauthversion='2.0'>
+                <svg aria-hidden="true" class="svg-icon iconFacebook" width="18" height="18" viewBox="0 0 18 18">
+                    <path fill="#4167B2"
+                        d="M3 1a2 2 0 0 0-2 2v12c0 1.1.9 2 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2H3Zm6.55 16v-6.2H7.46V8.4h2.09V6.61c0-2.07 1.26-3.2 3.1-3.2.88 0 1.64.07 1.87.1v2.16h-1.29c-1 0-1.19.48-1.19 1.18V8.4h2.39l-.31 2.42h-2.08V17h-2.5Z" />
+                </svg>
+                Sign up with Facebook </button>
+        </div>
+
+        <div id="formContainer" class="mx-auto mb24 p24 wmx3 bg-white bar-lg bs-xl mb24 with-captcha">
+            <form action="/admin/register" method="POST" class="d-flex fd-column gs12 gsy with-captcha">
+                <input type="hidden" name="csrf_token" value="{{.CSRFToken}}">
+                <label for="first_name">First Name</label>
+                <input id="first_name" type="text" name="FirstName" value="{{.RegisterUser.FirstName}}">
+                {{ with (index .FormError "FirstName") }}
+                <p style="color: red;">{{.}}</p>
+                {{end}}
+                <br>
+        
+                <label for="last_name">Last Name</label>
+                <input id="last_name" type="text" name="LastName" value="{{.RegisterUser.LastName}}">
+                {{ with (index .FormError "LastName") }}
+                <p style="color: red;">{{.}}</p>
+                {{end}}
+                <br>
+        
+                <label for="email">Email</label>
+                <input id="email" type="email" name="Email" value="{{.RegisterUser.Email}}">
+                {{ with (index .FormError "Email") }}
+                <p style="color: red;">{{.}}</p>
+                {{end}}
+                <br>
+        
+                <label for="username">Username</label>
+                <input id="username" type="text" name="Username" value="{{ .RegisterUser.Username }}">
+                <p style="color: red;">{{ .FormError.Username }}</p>
+                <br>
+        
+                <label for="password">Password</label>
+                <input id="password" type="password" name="Password" value="{{ .RegisterUser.Password }}">
+                <p style="color: red;">{{ .FormError.Password }}</p>
+                <br>
+        
+                <button class="flex--item s-btn" id="register" type="submit">Register</button>
+            </form>
+            <div class="js-terms fs-caption fc-light ta-left mt32">
+                By clicking “Sign up”, you agree to our <a
+                    href='https://stackoverflow.com/legal/terms-of-service/public' name='tos' target='_blank'
+                    class='-link'>terms of service</a>, <a href='https://stackoverflow.com/legal/privacy-policy'
+                    name='privacy' target='_blank' class='-link'>privacy policy</a> and <a
+                    href='https://stackoverflow.com/legal/cookie-policy' name='cookie' target='_blank'
+                    class='-link'>cookie policy</a><input type="hidden" name="legalLinksShown" value="1" />
+            </div>
+        </div>
+
+        <script>
+            StackExchange.ready(function () {
+
+                StackExchange.using("gps", function () { StackExchange.gps.sendPending(); });
+
+            });
+
+        </script>
+
+        <div class="mx-auto ta-center fs-body1 p16 pb0 mb24 w100 wmx3 js-redirects">
+            Already have an account? <a href='/users/login?ssrc=head' name='login'>Log in</a>
+
+            <div class="mt12">
+                Are you an employer? <a href='https://careers.stackoverflow.com/employer/login' name='talent'>Sign up on
+                    Talent <svg aria-hidden="true" class="va-text-bottom sm:d-none svg-icon iconShareSm" width="14"
+                        height="14" viewBox="0 0 14 14">
+                        <path
+                            d="M5 1H3a2 2 0 0 0-2 2v8c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V9h-2v2H3V3h2V1Zm2 0h6v6h-2V4.5L6.5 9 5 7.5 9.5 3H7V1Z" />
+                    </svg></a>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    StackExchange.ready(function () {
+        auth.init(auth.pages.SignUp);
+
+        $('#login-form').on('submit', function (e) {
+            var oauthServer = $('#oauth_server').val();
+            var provider =
+                /google.com/.test(oauthServer)
+                    ? 'Google'
+                    : /facebook.com/.test(oauthServer)
+                        ? 'Facebook'
+                        : /github.com/.test(oauthServer)
+                            ? 'GitHub'
+                            : 'Email';
+
+            StackExchange.ga.track('sign up', 'Sign Up Started - ' + provider, 'Sign Up Page');
+        });
+    });
+</script>
+</div>
+</div>
+
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-WCZ03SZFCQ"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+</script>
+<script>
+    (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () { (i[r].q = i[r].q || []).push(arguments) }, i[r].l = 1 * new Date(); a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m);
+    })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+</script>
+<script>
+    StackExchange.ready(function () {
+
+        var ga3Settings = {
+            autoLink: ["stackoverflow.blog", "info.stackoverflowsolutions.com", "stackoverflowsolutions.com"],
+            sendTitles: true,
+            tracker: window.ga,
+            trackingCodes: [
+                'UA-108242619-1'
+            ],
+            checkDimension: 'dimension42'
+        };
+
+        var customGA4Dimensions = {};
+
+        customGA4Dimensions["routename"] = "Users/Signup";
+
+        var ga4Settings = {
+            tracker: gtag,
+            trackingCodes: [
+                'G-WCZ03SZFCQ'
+            ],
+            consentsToPerformanceCookies: "granted",
+            consentsToTargetingCookies: "granted",
+            eventParameters: customGA4Dimensions,
+            checkForAdBlock: true
+        };
+
+        StackExchange.ga.init({ GA3: ga3Settings, GA4: ga4Settings });
+
+
+
+
+        StackExchange.ga.setDimension('dimension3', 'Users/Signup');
+
+
+        StackExchange.ga.setDimension('dimension7', "1678773064.1372584911");
+
+        StackExchange.ga.trackPageView();
+    });
+</script>
+
+
+<div id="onetrust-consent-sdk" class="d-none"></div>
+<div id="onetrust-banner-sdk" data-controller="s-modal"></div>
+<div id="ot-pc-content" class="d-none"></div>
+<div id="onetrust-style" class="d-none">&nbsp;</div>
+<div class="d-none js-consent-banner-version" data-consent-banner-version="a1"></div>
+
+
+
+{{ template "footer.html"}}

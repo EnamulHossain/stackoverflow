@@ -1,15 +1,13 @@
 package handler
 
 import (
-	"log"
-	"net/http"
-	"strconv"
-	"strings"
-
-	userpb "stackoverflow/gunk/v1/user"
-
 	validation "github.com/go-ozzo/ozzo-validation/v4"
 	"github.com/justinas/nosurf"
+	"log"
+	"net/http"
+	userpb "stackoverflow/gunk/v1/user"
+	"strconv"
+	"strings"
 )
 
 type LoginUser struct {
@@ -75,7 +73,18 @@ func (h Handler) LoginPostHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	h.sessionManager.Put(r.Context(), "userID", strconv.Itoa(int(u.GetUser().ID)))
-	http.Redirect(w, r, "/users", http.StatusSeeOther)
+	h.sessionManager.Put(r.Context(), "IsAdmin", (u.GetUser().IsAdmin))
+
+	if u.User.IsAdmin == true {
+
+		http.Redirect(w, r, "/admin/list", http.StatusSeeOther)
+	}
+	if u.User.IsAdmin == false {
+
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+
+	}
+
 }
 
 func (h Handler) pareseLoginTemplate(w http.ResponseWriter, data any) {

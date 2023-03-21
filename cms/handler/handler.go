@@ -9,6 +9,7 @@ import (
 	"strings"
 	"text/template"
 
+	categorypb "stackoverflow/gunk/v1/category"
 	userpb "stackoverflow/gunk/v1/user"
 
 	"github.com/Masterminds/sprig"
@@ -23,10 +24,15 @@ type usermgmService struct {
 	userpb.UserServiceClient
 }
 
+type categoryService struct {
+	categorypb.CategoryServiceClient
+}
+
 type Handler struct {
 	sessionManager *scs.SessionManager
 	decoder        *form.Decoder
 	usermgmSvc     usermgmService
+	categorySvc    categoryService
 	Templates      *template.Template
 	staticFiles    fs.FS
 	templateFiles  fs.FS
@@ -80,6 +86,7 @@ func NewHandler(sm *scs.SessionManager, formDecoder *form.Decoder, usermgmConn *
 		sessionManager: sm,
 		decoder:        formDecoder,
 		usermgmSvc:     usermgmService{userpb.NewUserServiceClient(usermgmConn)},
+		categorySvc:    categoryService{categorypb.NewCategoryServiceClient(usermgmConn)},
 		staticFiles:    staticFiles,
 		templateFiles:  templateFiles,
 	}
@@ -101,6 +108,8 @@ func NewHandler(sm *scs.SessionManager, formDecoder *form.Decoder, usermgmConn *
 		r.Post("/register", h.RegisterPost)
 		r.Get("/login", h.Login)
 		r.Post("/login", h.LoginPostHandler)
+		r.Get("/logout", h.LogoutHandler)
+
 	})
 
 	r.Handle("/static/*", http.StripPrefix("/static", http.FileServer(http.FS(h.staticFiles))))
@@ -108,22 +117,30 @@ func NewHandler(sm *scs.SessionManager, formDecoder *form.Decoder, usermgmConn *
 	r.Group(func(r chi.Router) {
 		r.Use(sm.LoadAndSave)
 		r.Use(h.Authentication)
-
+		// r.Use(h.AdminAuthentication)
 		r.Route("/users", func(r chi.Router) {
-			r.Get("/", h.ListUser)
 
-			r.Get("/list", h.ListUser)
-
-			// r.Post("/store", h.StoreUser)
-
-			// r.Get("/{id:[0-9]+}/edit", h.EditUser)
-
-			// r.Put("/{id:[0-9]+}/update", h.UpdateUser)
-
-			// r.Get("/{id:[0-9]+}/delete", h.DeleteUser)
 		})
 
 		r.Get("/logout", h.LogoutHandler)
+	})
+
+	r.Group(func(r chi.Router) {
+		r.Use(sm.LoadAndSave)
+		r.Use(h.Authentication)
+		r.Use(h.AdminAuthentication)
+
+		r.Route("/admin", func(r chi.Router) {
+			r.Get("/list", h.ListUser)
+			r.Get("/r", h.AdminReg)
+			r.Post("/register", h.AdminRegisterPost)
+
+			r.Get("/catergoy/create", h.CreateCategory)
+			r.Post("/category/store", h.CreateCategoryPost)
+			r.Get("/catergoy/list", h.ListCategory)
+
+
+		})
 	})
 
 	return r
@@ -159,6 +176,18 @@ func (h Handler) Authentication(next http.Handler) http.Handler {
 			http.Redirect(w, r, "/login", http.StatusSeeOther)
 			return
 		}
+		next.ServeHTTP(w, r)
+	})
+}
+
+func (h Handler) AdminAuthentication(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		IsAdmin := h.sessionManager.GetBool(r.Context(), "IsAdmin")
+		if !IsAdmin {
+			http.Redirect(w, r, "/", http.StatusSeeOther)
+			return
+		}
+
 		next.ServeHTTP(w, r)
 	})
 }

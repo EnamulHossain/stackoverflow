@@ -77,8 +77,7 @@ func (cu CoreUser) Login(l storage.Login) (*storage.User, error) {
 		return nil, err
 	}
 
-	fmt.Printf("####################")
-	fmt.Println(u.IsAdmin)
+	
 
 	if err := bcrypt.CompareHashAndPassword([]byte(u.Password), []byte(l.Password)); err != nil {
 		return nil, err

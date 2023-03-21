@@ -45,7 +45,6 @@ func (cs CategorySvc) CreateCategory(ctx context.Context, r *categorypb.CreateCa
 			Name: u.Name,
 		},
 	}, nil
-
 }
 
 func (cs CategorySvc) ListCategory(ctx context.Context, r *categorypb.ListCategoryRequest) (*categorypb.ListCategoryResponse, error) {
