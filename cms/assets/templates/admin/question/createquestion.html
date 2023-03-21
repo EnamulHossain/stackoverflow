@@ -1,0 +1,60 @@
+{{template "header.html"}}
+
+
+<div class="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-lg">
+        <h1 class="text-center text-2xl font-bold text-indigo-600 sm:text-3xl">
+            Create a Question
+        </h1>
+
+
+        <form action="/users/question/store" method="post"
+            class="mt-6 mb-0 space-y-4 rounded-lg p-4 shadow-lg sm:p-6 lg:p-8">
+            <input type="hidden" name="csrf_token" value="{{.CSRFToken}}">
+            <div>
+                <label for="name" class="sr-only">Category</label>
+
+                <div class="relative">
+                    <select name="CategoryId" id=""
+                        class="w-full rounded-lg border-gray-200 p-4 pr-12 text-sm shadow-sm">
+                        <option value="">Select A Category
+                        <option>
+                            {{ range .Category}}
+                        <option value="{{.ID }}">{{.Name}}</option>
+                        {{ end }}
+                    </select>
+                </div>
+            </div>
+
+            <div>
+                <label for="Title" class="sr-only">Question Name</label>
+
+                <div class="relative">
+                    <input type="text" name="Title"
+                        class="w-full rounded-lg border-gray-200 p-4 pr-12 text-sm shadow-sm"
+                        placeholder="Enter Question" value="" />
+                </div>
+
+            </div>
+
+            <div>
+                <label for="Description" class="sr-only">Question Description</label>
+
+                <div class="relative">
+                    <input type="text" name="Description"
+                        class="w-full rounded-lg border-gray-200 p-4 pr-12 text-sm shadow-sm"
+                        placeholder="Enter Question Description" value="" />
+                </div>
+
+            </div>
+
+            <button type="submit"
+                class="block w-full rounded-lg bg-indigo-600 px-5 py-3 text-sm font-medium text-white">
+                submit
+            </button>
+        </form>
+    </div>
+</div>
+
+
+{{ template "footer.html"}}

@@ -73,3 +73,29 @@ func (c Handler) pareseCatagoryListTemplate(w http.ResponseWriter, data any) {
 		log.Fatal(err)
 	}
 }
+
+//  QUESTION
+
+
+func (c Handler) pareseCreateQuestionTemplate(w http.ResponseWriter, data any) {
+	t := c.Templates.Lookup("createquestion.html")
+	if t == nil {
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+	}
+	if err := t.Execute(w, data); err != nil {
+		log.Fatal(err)
+	}
+}
+
+
+
+
+func (c Handler) pareseQuestionListTemplate(w http.ResponseWriter, data any) {
+	t := c.Templates.Lookup("questionlist.html")
+	if t == nil {
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+	}
+	if err := t.Execute(w, data); err != nil {
+		log.Fatal(err)
+	}
+}

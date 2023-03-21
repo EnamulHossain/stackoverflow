@@ -65,6 +65,7 @@ func (qs QuestionSvc) ListQuestion(ctx context.Context, r *questionpb.ListQuesti
 	for i, q := range question {
 		list[i] = &questionpb.Question{
 			ID:          int32(q.ID),
+			UserId:      int32(q.UserId),
 			CategoryId:  int32(q.CategoryId),
 			Title:       q.Title,
 			Description: q.Description,

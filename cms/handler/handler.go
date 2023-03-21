@@ -10,6 +10,7 @@ import (
 	"text/template"
 
 	categorypb "stackoverflow/gunk/v1/category"
+	questionpb "stackoverflow/gunk/v1/question"
 	userpb "stackoverflow/gunk/v1/user"
 
 	"github.com/Masterminds/sprig"
@@ -28,11 +29,16 @@ type categoryService struct {
 	categorypb.CategoryServiceClient
 }
 
+type questionService struct {
+	questionpb.QuestionServiceClient
+}
+
 type Handler struct {
 	sessionManager *scs.SessionManager
 	decoder        *form.Decoder
 	usermgmSvc     usermgmService
 	categorySvc    categoryService
+	questionSvc    questionService
 	Templates      *template.Template
 	staticFiles    fs.FS
 	templateFiles  fs.FS
@@ -87,6 +93,7 @@ func NewHandler(sm *scs.SessionManager, formDecoder *form.Decoder, usermgmConn *
 		decoder:        formDecoder,
 		usermgmSvc:     usermgmService{userpb.NewUserServiceClient(usermgmConn)},
 		categorySvc:    categoryService{categorypb.NewCategoryServiceClient(usermgmConn)},
+		questionSvc:    questionService{questionpb.NewQuestionServiceClient(usermgmConn)},
 		staticFiles:    staticFiles,
 		templateFiles:  templateFiles,
 	}
@@ -119,6 +126,9 @@ func NewHandler(sm *scs.SessionManager, formDecoder *form.Decoder, usermgmConn *
 		r.Use(h.Authentication)
 		// r.Use(h.AdminAuthentication)
 		r.Route("/users", func(r chi.Router) {
+			r.Get("/question/create", h.CreateQuestion)
+			r.Post("/question/store", h.CreateQuestionPost)
+			r.Get("/question/list", h.ListQuestion)
 
 		})
 
@@ -138,7 +148,6 @@ func NewHandler(sm *scs.SessionManager, formDecoder *form.Decoder, usermgmConn *
 			r.Get("/catergoy/create", h.CreateCategory)
 			r.Post("/category/store", h.CreateCategoryPost)
 			r.Get("/catergoy/list", h.ListCategory)
-
 
 		})
 	})
