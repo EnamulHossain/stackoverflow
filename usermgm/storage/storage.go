@@ -8,6 +8,13 @@ import (
 	"github.com/go-ozzo/ozzo-validation/v4/is"
 )
 
+type UserFilter struct {
+	SearchTerm string
+	Offset     int
+	Limit      int
+	ListUser   []User
+}
+
 type User struct {
 	ID        int          `json:"id" form:"-" db:"id"`
 	FirstName string       `json:"first_name" db:"first_name"`
@@ -59,12 +66,6 @@ func (l Login) Validate() error {
 	)
 }
 
-type UserFilter struct {
-	SearchTerm string
-	Offset     int
-	Limit      int
-	ListUser   []User
-}
 
 type Category struct {
 	ID        int          `json:"id" form:"-" db:"id"`
@@ -86,6 +87,7 @@ type Question struct {
 	ID          int          `json:"id" form:"-" db:"id"`
 	UserId      int          `json:"user_id" db:"user_id"`
 	CategoryId  int          `json:"category_id" db:"category_id"`
+	Name      string       `json:"name" db:"name"`
 	Title       string       `json:"title" db:"title"`
 	Description string       `json:"description" db:"description"`
 	PublishedAt sql.NullTime `json:"published_at" db:"published_at"`

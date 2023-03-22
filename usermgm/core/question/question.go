@@ -7,7 +7,8 @@ import (
 
 type QuestionStore interface {
 	CreateQuestion(u storage.Question) (*storage.Question, error)
-	ListQuestion() ([]storage.Question, error)
+	// ListQuestion() ([]storage.Question, error)
+	ListQuestion(uf storage.UserFilter) ([]storage.Question, error)
 	DeleteQuestion(id int32) error
 	GetQuestionByID(id int32) (*storage.Question, error)
 	QuestionUpdate(u storage.Question) (*storage.Question, error)
@@ -38,9 +39,9 @@ func (cq CoreQuestion) CreateQuestion(u storage.Question) (*storage.Question, er
 	return cc, nil
 }
 
-func (cq CoreQuestion) ListQuestion() ([]storage.Question, error) {
+func (cq CoreQuestion) ListQuestion(uf storage.UserFilter) ([]storage.Question, error) {
 
-	list, err := cq.store.ListQuestion()
+	list, err := cq.store.ListQuestion(uf)
 	if err != nil {
 		return nil, err
 	}

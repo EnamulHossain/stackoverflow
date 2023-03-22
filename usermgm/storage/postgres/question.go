@@ -40,12 +40,21 @@ func (s PostgresStorage) CreateQuestion(u storage.Question) (*storage.Question, 
 }
 
 
-const listcqueQuery = `SELECT * FROM question WHERE deleted_at IS NULL`
+// const listcqueQuery = `SELECT * FROM question WHERE deleted_at IS NULL`
 
-func (s PostgresStorage) ListQuestion() ([]storage.Question, error) {
+const listcqueQuery = `SELECT c.name, q.id, q.user_id, q.category_id, q.title, q.description
+		FROM category c
+		LEFT JOIN question q ON c.id = q.category_id
+		WHERE c.name ILIKE '%' || $1 || '%' OR q.title ILIKE '%' || $1 || '%' OR q.description ILIKE '%' || $1 || '%'
+		ORDER BY q.id DESC
+		OFFSET $2
+		LIMIT $3;
+		`
+
+func (s PostgresStorage) ListQuestion(uf storage.UserFilter) ([]storage.Question, error) {
 
 	var question []storage.Question
-	if err := s.DB.Select(&question, listcqueQuery); err != nil {
+	if err := s.DB.Select(&question, listcqueQuery, uf.SearchTerm, uf.Offset, uf.Limit); err != nil {
 		log.Fatal(err)
 		return nil, err
 	}

@@ -7,7 +7,8 @@ import (
 
 type CategoryStore interface {
 	CreateCategory(storage.Category) (*storage.Category, error)
-	ListCategory() ([]storage.Category, error)
+	// ListCategory() ([]storage.Category, error)
+	ListCategory(uf storage.UserFilter) ([]storage.Category, error)
 	DeleteCategory(id int32) error
 	GetCategoryByID(id int32) (*storage.Category, error)
 	UpdateCategory(u storage.Category) (*storage.Category, error)
@@ -35,9 +36,10 @@ func (ca CoreCategory) CreateCategory(u storage.Category) (*storage.Category, er
 	return cc, nil
 }
 
-func (cc CoreCategory) ListCategory() ([]storage.Category, error) {
+func (cc CoreCategory) ListCategory(uf storage.UserFilter) ([]storage.Category, error) {
 
-	list, err := cc.store.ListCategory()
+	
+	list, err := cc.store.ListCategory(uf)
 	if err != nil {
 		return nil, err
 	}

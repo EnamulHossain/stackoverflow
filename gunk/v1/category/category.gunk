@@ -21,7 +21,11 @@ type CreateCategoryResponse struct {
 	Category Category `pb:"1"`
 }
 
-type ListCategoryRequest struct{}
+type ListCategoryRequest struct {
+	SearchTerm string `pb:"1"`
+	Limit      int    `pb:"2"`
+	Offset     int    `pb:"3"`
+}
 
 type ListCategoryResponse struct {
 	Categorys []Category `pb:"1"`

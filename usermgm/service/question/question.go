@@ -9,7 +9,8 @@ import (
 
 type CoreQuestion interface {
 	CreateQuestion(u storage.Question) (*storage.Question, error)
-	ListQuestion() ([]storage.Question, error)
+	// ListQuestion() ([]storage.Question, error)
+	ListQuestion(uf storage.UserFilter) ([]storage.Question, error)
 	DeleteQuestion(id int32) error
 	GetQuestionByID(id int32) (*storage.Question, error)
 	QuestionUpdate(u storage.Question) (*storage.Question, error)
@@ -59,7 +60,12 @@ func (qs QuestionSvc) CreateQuestion(ctx context.Context, r *questionpb.CreateQu
 
 func (qs QuestionSvc) ListQuestion(ctx context.Context, r *questionpb.ListQuestionRequest) (*questionpb.ListQuestionResponse, error) {
 
-	question, err := qs.core.ListQuestion()
+	uf := storage.UserFilter{
+		SearchTerm: r.GetSearchTerm(),
+		Offset:     int(r.GetOffset()),
+		Limit:      int(r.GetLimit()),
+	}
+	question, err := qs.core.ListQuestion(uf)
 	if err != nil {
 		return nil, err
 	}
@@ -71,6 +77,7 @@ func (qs QuestionSvc) ListQuestion(ctx context.Context, r *questionpb.ListQuesti
 			CategoryId:  int32(q.CategoryId),
 			Title:       q.Title,
 			Description: q.Description,
+			Name:        q.Name,
 		}
 	}
 

@@ -32,12 +32,19 @@ func (s PostgresStorage) CreateCategory(u storage.Category) (*storage.Category, 
 
 
 
-const listcatQuery = `SELECT * FROM category WHERE deleted_at IS NULL`
+// const listcatQuery = `SELECT * FROM category WHERE deleted_at IS NULL`
+const listcatQuery = `SELECT * FROM category WHERE deleted_at IS NULL
+					AND (name ILIKE '%%' || $1 || '%%')
+					ORDER BY id ASC
+						OFFSET $2
+						LIMIT $3`
 
-func (s PostgresStorage) ListCategory() ([]storage.Category, error) {
-
+func (s PostgresStorage) ListCategory(uf storage.UserFilter) ([]storage.Category, error) {
 	var category []storage.Category
-	if err := s.DB.Select(&category, listcatQuery); err != nil {
+	if uf.Limit == 0 {
+		uf.Limit = 15
+	}
+	if err := s.DB.Select(&category, listcatQuery, uf.SearchTerm, uf.Offset, uf.Limit); err != nil {
 		log.Fatal(err)
 		return nil, err
 	}

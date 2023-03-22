@@ -8,7 +8,8 @@ import (
 
 type CoreCategory interface {
 	CreateCategory(u storage.Category) (*storage.Category, error)
-	ListCategory() ([]storage.Category, error)
+	// ListCategory() ([]storage.Category, error)
+	ListCategory(uf storage.UserFilter) ([]storage.Category, error)
 	DeleteCategory(id int32) error
 	GetCategoryByID(id int32) (*storage.Category, error)
 	UpdateCategory(u storage.Category) (*storage.Category, error)
@@ -48,7 +49,12 @@ func (cs CategorySvc) CreateCategory(ctx context.Context, r *categorypb.CreateCa
 }
 
 func (cs CategorySvc) ListCategory(ctx context.Context, r *categorypb.ListCategoryRequest) (*categorypb.ListCategoryResponse, error) {
-	categories, err := cs.core.ListCategory()
+	uf := storage.UserFilter{
+		SearchTerm: r.GetSearchTerm(),
+		Offset:     int(r.GetOffset()),
+		Limit:      int(r.GetLimit()),
+	}
+	categories, err := cs.core.ListCategory(uf)
 	if err != nil {
 		return nil, err
 	}

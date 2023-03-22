@@ -19,6 +19,7 @@ type Question struct {
 	CategoryId  int    `pb:"3"`
 	Title       string `pb:"4"`
 	Description string `pb:"5"`
+	Name        string `pb:"6"`
 }
 
 type createQuestionRequest struct {
@@ -32,7 +33,11 @@ type createQuestionResponse struct {
 	Question Question `pb:"1"`
 }
 
-type ListQuestionRequest struct{}
+type ListQuestionRequest struct {
+	SearchTerm string `pb:"1"`
+	Limit      int    `pb:"2"`
+	Offset     int    `pb:"3"`
+}
 
 type ListQuestionResponse struct {
 	Questions []Question `pb:"1"`
