@@ -61,6 +61,8 @@ func (l Login) Validate() error {
 
 type UserFilter struct {
 	SearchTerm string
+	Offset     int
+	Limit      int
 	ListUser   []User
 }
 

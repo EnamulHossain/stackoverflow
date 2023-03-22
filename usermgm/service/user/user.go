@@ -11,7 +11,8 @@ type CoreUser interface {
 	Register(storage.User) (*storage.User, error)
 	AdminRegister(u storage.User) (*storage.User, error)
 	Login(storage.Login) (*storage.User, error)
-	ListUser() ([]storage.User, error)
+	// ListUser() ([]storage.User, error)
+	ListUser(uf storage.UserFilter) ([]storage.User, error)
 	DeleteUser(id int32) error
 	GetUserByID(id int32) (*storage.User, error)
 	UpdateUser(u storage.User) (*storage.User, error)
@@ -125,7 +126,13 @@ func (us UserSvc) Login(ctx context.Context, r *userpb.LoginRequest) (*userpb.Lo
 
 func (us UserSvc) ListUser(ctx context.Context, req *userpb.ListUserRequest) (*userpb.ListUserResponse, error) {
 
-	users, err := us.core.ListUser()
+	uf := storage.UserFilter{
+		SearchTerm: req.GetSearchTerm(),
+		Offset:     int(req.GetOffset()),
+		Limit:      int(req.GetLimit()),
+	}
+
+	users, err := us.core.ListUser(uf)
 	if err != nil {
 		return nil, err
 	}

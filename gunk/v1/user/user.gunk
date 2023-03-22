@@ -57,7 +57,11 @@ type LoginResponse struct {
 	User User `pb:"1"`
 }
 
-type ListUserRequest struct{}
+type ListUserRequest struct {
+	SearchTerm string `pb:"1"`
+	Limit      int    `pb:"2"`
+	Offset     int    `pb:"3"`
+}
 
 type ListUserResponse struct {
 	Users []User `pb:"1"`

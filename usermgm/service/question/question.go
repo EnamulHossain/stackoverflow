@@ -3,7 +3,6 @@ package question
 import (
 	"context"
 	"database/sql"
-	"fmt"
 	questionpb "stackoverflow/gunk/v1/question"
 	"stackoverflow/usermgm/storage"
 )

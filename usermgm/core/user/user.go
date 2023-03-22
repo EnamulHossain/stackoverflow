@@ -11,7 +11,8 @@ import (
 type UserStore interface {
 	Register(storage.User) (*storage.User, error)
 	GetUserByUsername(string) (*storage.User, error)
-	ListUser() ([]storage.User, error)
+	// ListUser() ([]storage.User, error)
+	ListUser(uf storage.UserFilter) ([]storage.User, error)
 	DeleteUser(id int32) error
 	AdminRegister(u storage.User) (*storage.User, error)
 	GetUserByID(id int32) (*storage.User, error)
@@ -85,9 +86,9 @@ func (cu CoreUser) Login(l storage.Login) (*storage.User, error) {
 	return u, nil
 }
 
-func (cu CoreUser) ListUser() ([]storage.User, error) {
+func (cu CoreUser) ListUser(uf storage.UserFilter) ([]storage.User, error) {
 
-	list, err := cu.store.ListUser()
+	list, err := cu.store.ListUser(uf)
 	if err != nil {
 		return nil, err
 	}

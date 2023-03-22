@@ -75,7 +75,6 @@ func (s PostgresStorage) AdminRegister(u storage.User) (*storage.User, error) {
 	return &u, nil
 }
 
-
 const getUserByUsernameQuery = `SELECT * FROM users WHERE username=$1 AND deleted_at IS NULL`
 
 func (ps PostgresStorage) GetUserByUsername(usernanme string) (*storage.User, error) {
@@ -91,23 +90,29 @@ func (ps PostgresStorage) GetUserByUsername(usernanme string) (*storage.User, er
 	return &user, nil
 }
 
+// const listQuery = `SELECT * FROM users WHERE deleted_at IS NULL`
 
+// List Start
+const listQuery = `SELECT * FROM users WHERE deleted_at IS NULL
+				AND (first_name ILIKE '%%' || $1 || '%%' OR last_name ILIKE '%%' || $1 || '%%' OR username ILIKE '%%' || $1 || '%%' OR email ILIKE '%%' || $1 || '%%')
+						ORDER BY id DESC
+						OFFSET $2
+						LIMIT $3`
 
-
-
-const listQuery = `SELECT * FROM users WHERE deleted_at IS NULL`
-
-func (s PostgresStorage) ListUser() ([]storage.User, error) {
+func (s PostgresStorage) ListUser(uf storage.UserFilter) ([]storage.User, error) {
 
 	var user []storage.User
-	if err := s.DB.Select(&user, listQuery); err != nil {
+	if uf.Limit == 0 {
+		uf.Limit = 15
+	}
+	if err := s.DB.Select(&user, listQuery, uf.SearchTerm, uf.Offset, uf.Limit); err != nil {
 		log.Fatal(err)
 		return nil, err
 	}
 	return user, nil
 }
 
-
+// List End
 
 const deleteUserByIdQuery = `UPDATE users SET deleted_at = CURRENT_TIMESTAMP WHERE id=$1 AND deleted_at IS NULL`
 
