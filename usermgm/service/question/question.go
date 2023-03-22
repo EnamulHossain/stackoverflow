@@ -3,6 +3,7 @@ package question
 import (
 	"context"
 	"database/sql"
+	"fmt"
 	questionpb "stackoverflow/gunk/v1/question"
 	"stackoverflow/usermgm/storage"
 )
@@ -14,6 +15,8 @@ type CoreQuestion interface {
 	GetQuestionByID(id int32) (*storage.Question, error)
 	QuestionUpdate(u storage.Question) (*storage.Question, error)
 	QuestionPublished(u storage.Question) (*storage.Question, error)
+
+	ListQuestionByUser(id int32) ([]storage.Question, error)
 }
 
 type QuestionSvc struct {
@@ -77,6 +80,27 @@ func (qs QuestionSvc) ListQuestion(ctx context.Context, r *questionpb.ListQuesti
 	}, nil
 }
 
+func (qs QuestionSvc) GetQueByUser(ctx context.Context, r *questionpb.GetQueByUserRequest) (*questionpb.GetQueByUserResponse, error) {
+
+	question, err := qs.core.ListQuestionByUser(r.GetID())
+	if err != nil {
+		return nil, err
+	}
+	list := make([]*questionpb.Question, len(question))
+	for i, q := range question {
+		list[i] = &questionpb.Question{
+			ID:          int32(q.ID),
+			UserId:      int32(q.UserId),
+			CategoryId:  int32(q.CategoryId),
+			Title:       q.Title,
+			Description: q.Description,
+		}
+	}
+	return &questionpb.GetQueByUserResponse{
+		Questions: list,
+	}, nil
+}
+
 func (qs QuestionSvc) DeleteQuestion(ctx context.Context, r *questionpb.DeleteQuestionRequest) (*questionpb.DeleteQuestionResponse, error) {
 	err := qs.core.DeleteQuestion(r.GetID())
 
@@ -124,7 +148,7 @@ func (qs QuestionSvc) UpdateQuestion(ctx context.Context, r *questionpb.UpdateQu
 func (qs QuestionSvc) PublishedQuestion(ctx context.Context, r *questionpb.PublishedQuestionRequest) (*questionpb.PublishedQuestionResponse, error) {
 
 	publishQuestion := storage.Question{
-		ID:          int(r.GetID()),
+		ID: int(r.GetID()),
 		PublishedAt: sql.NullTime{
 			Time:  r.PublishedAt.AsTime(),
 			Valid: false,

@@ -32,6 +32,41 @@
             </div>
             <h5 class="flex--item fl1"> {{.Form.Description}}</h5>
 
+            <br>
+            <br>
+
+            <h1 class="flex--item fl1"> All Answere For The Question </h1>
+
+
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y-2 divide-gray-200 text-sm">
+
+                    {{ range .An }}
+                    <tbody class="divide-y divide-gray-200">
+                        <tr>
+                            <td class="sticky inset-y-0 left-0 bg-white px-4 py-2">
+                                <label class="sr-only" for="Row1">Row 1</label>
+
+                                <input class="h-5 w-5 rounded border-gray-300" type="checkbox" id="Row1" />
+                            </td>
+                            <td class="whitespace-nowrap px-4 py-2 text-gray-700 ">{{.Answere}} </td>
+                        </tr>
+                    </tbody>
+
+                    {{end}}
+
+
+                    
+
+                </table>
+            </div>
+
+
+
+            <br>
+
+
+
             <div id="mainbar" role="main" aria-label="question and answers">
 
                 <div id="answers" class="no-answers">

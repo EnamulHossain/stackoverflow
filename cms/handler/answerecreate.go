@@ -35,37 +35,12 @@ func (a Answere) Validate() error {
 type AnswereForm struct {
 	Question  []Questionc
 	Answere   Answere
+	An        []Answere
 	FormError map[string]error
 	CSRFToken string
 	Form      Questionc
+	USERID int
 }
-
-// func (h Handler) CreateAnswere(w http.ResponseWriter, r *http.Request) {
-
-// Question, err := h.questionSvc.ListQuestion(r.Context(),&questionpb.ListQuestionRequest{})
-// if err != nil {
-// 	log.Fatalln(err)
-// }
-
-// data := []Questionc{}
-
-// if Question != nil {
-
-// 	for _, q := range Question.Questions {
-// 		data = append(data,Questionc{
-// 			ID:          int(q.ID),
-// 			UserId:      int(q.UserId),
-// 			CategoryId:  int(q.CategoryId),
-// 			Title:       q.Title,
-// 			Description: q.Description,
-// 		})
-// 	}
-// }
-// h.pareseCreateAnswereTemplate(w, AnswereForm{
-// 	Question:  data,
-// 	CSRFToken: nosurf.Token(r),
-// })
-// }
 
 func (h Handler) CreateAnswere(w http.ResponseWriter, r *http.Request) {
 
@@ -87,6 +62,41 @@ func (h Handler) CreateAnswere(w http.ResponseWriter, r *http.Request) {
 		log.Fatalln(err)
 	}
 
+	// ANSWERE LIST Start
+	re, err := h.answereSvc.AnswereList(r.Context(), &answerepb.AnswereListRequest{
+		ID: int32(uid),
+	})
+
+	if err != nil {
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+	}
+
+	dat := []Answere{}
+
+	if re != nil {
+		for _, a := range re.Answere {
+			dat = append(dat, Answere{
+				ID:         int(a.ID),
+				UserId:     int(a.UserId),
+				QuestionId: int(a.QuestionId),
+				Answere:    a.Answere,
+				IsCorrect:  a.IsCorrect,
+			})
+		}
+	}
+	// ANSWERE LIST End
+
+
+
+	// Auth ID
+	userID := h.sessionManager.GetString(r.Context(), "userID")
+
+	uID, err := strconv.Atoi(userID)
+	if err != nil {
+		http.Error(w, "internal server error", http.StatusInternalServerError)
+	}
+	// Auth ID
+
 	Data := AnswereForm{
 		CSRFToken: nosurf.Token(r),
 		Form: Questionc{
@@ -96,11 +106,12 @@ func (h Handler) CreateAnswere(w http.ResponseWriter, r *http.Request) {
 			Title:       res.Question.Title,
 			Description: res.Question.Description,
 		},
+		An: dat,
+		USERID: uID,
 	}
-
 	h.pareseCreateAnswereTemplate(w, Data)
-
 }
+
 
 func (h Handler) CreateAnswerePost(w http.ResponseWriter, r *http.Request) {
 	if err := r.ParseForm(); err != nil {
@@ -113,7 +124,6 @@ func (h Handler) CreateAnswerePost(w http.ResponseWriter, r *http.Request) {
 
 	var form AnswereForm
 	var ac Answere
-
 
 	if err := h.decoder.Decode(&ac, r.PostForm); err != nil {
 		log.Println(err)
@@ -139,8 +149,6 @@ func (h Handler) CreateAnswerePost(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "internal server error", http.StatusInternalServerError)
 	}
 
-	fmt.Println(uID,ac.QuestionId,ac.Answere)
-
 	_, err = h.answereSvc.AnswereCreate(r.Context(), &answerepb.AnswereCreateRequest{
 		UserId:     int32(uID),
 		QuestionId: int32(ac.QuestionId),
@@ -152,5 +160,5 @@ func (h Handler) CreateAnswerePost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	h.pareseCreateAnswereTemplate(w, form)
+	http.Redirect(w, r, fmt.Sprintf("/users/answere/create/%d", ac.QuestionId), http.StatusSeeOther)
 }

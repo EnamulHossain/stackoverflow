@@ -8,6 +8,7 @@ type QuestionService interface {
 	DeleteQuestion(DeleteQuestionRequest) DeleteQuestionResponse
 	EditQuestion(EditQuestionRequest) EditQuestionResponse
 	UpdateQuestion(UpdateQuestionRequest) UpdateQuestionResponse
+	GetQueByUser(GetQueByUserRequest) GetQueByUserResponse
 
 	PublishedQuestion(PublishedQuestionRequest) PublishedQuestionResponse
 }
@@ -66,3 +67,11 @@ type PublishedQuestionRequest struct {
 }
 
 type PublishedQuestionResponse struct{}
+
+type GetQueByUserRequest struct {
+	ID int `pb:"1"`
+}
+
+type GetQueByUserResponse struct {
+	Questions []Question `pb:"1"`
+}

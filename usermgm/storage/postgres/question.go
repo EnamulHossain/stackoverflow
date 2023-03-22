@@ -54,6 +54,20 @@ func (s PostgresStorage) ListQuestion() ([]storage.Question, error) {
 
 
 
+const listqueByuserQuery = `SELECT * FROM question WHERE user_id = $1 AND deleted_at IS NULL`
+
+func (s PostgresStorage) ListQuestionByUser(id int32) ([]storage.Question, error) {
+
+	var question []storage.Question
+	if err := s.DB.Select(&question, listqueByuserQuery,id); err != nil {
+		log.Fatal(err)
+		return nil, err
+	}
+	return question, nil
+}
+
+
+
 
 const deleteQuestionByIdQuery = `UPDATE question SET deleted_at = CURRENT_TIMESTAMP WHERE id=$1 AND deleted_at IS NULL`
 

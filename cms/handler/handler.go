@@ -134,6 +134,10 @@ func NewHandler(sm *scs.SessionManager, formDecoder *form.Decoder, usermgmConn *
 		r.Use(sm.LoadAndSave)
 		r.Use(h.Authentication)
 		r.Route("/users", func(r chi.Router) {
+
+			r.Get("/dashboard",h.Userdashboard)
+
+
 			r.Get("/question/create", h.CreateQuestion)
 			r.Post("/question/store", h.CreateQuestionPost)
 

@@ -23,6 +23,7 @@ type QuestionServiceClient interface {
 	DeleteQuestion(ctx context.Context, in *DeleteQuestionRequest, opts ...grpc.CallOption) (*DeleteQuestionResponse, error)
 	EditQuestion(ctx context.Context, in *EditQuestionRequest, opts ...grpc.CallOption) (*EditQuestionResponse, error)
 	UpdateQuestion(ctx context.Context, in *UpdateQuestionRequest, opts ...grpc.CallOption) (*UpdateQuestionResponse, error)
+	GetQueByUser(ctx context.Context, in *GetQueByUserRequest, opts ...grpc.CallOption) (*GetQueByUserResponse, error)
 	PublishedQuestion(ctx context.Context, in *PublishedQuestionRequest, opts ...grpc.CallOption) (*PublishedQuestionResponse, error)
 }
 
@@ -79,6 +80,15 @@ func (c *questionServiceClient) UpdateQuestion(ctx context.Context, in *UpdateQu
 	return out, nil
 }
 
+func (c *questionServiceClient) GetQueByUser(ctx context.Context, in *GetQueByUserRequest, opts ...grpc.CallOption) (*GetQueByUserResponse, error) {
+	out := new(GetQueByUserResponse)
+	err := c.cc.Invoke(ctx, "/questionpb.QuestionService/GetQueByUser", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *questionServiceClient) PublishedQuestion(ctx context.Context, in *PublishedQuestionRequest, opts ...grpc.CallOption) (*PublishedQuestionResponse, error) {
 	out := new(PublishedQuestionResponse)
 	err := c.cc.Invoke(ctx, "/questionpb.QuestionService/PublishedQuestion", in, out, opts...)
@@ -97,6 +107,7 @@ type QuestionServiceServer interface {
 	DeleteQuestion(context.Context, *DeleteQuestionRequest) (*DeleteQuestionResponse, error)
 	EditQuestion(context.Context, *EditQuestionRequest) (*EditQuestionResponse, error)
 	UpdateQuestion(context.Context, *UpdateQuestionRequest) (*UpdateQuestionResponse, error)
+	GetQueByUser(context.Context, *GetQueByUserRequest) (*GetQueByUserResponse, error)
 	PublishedQuestion(context.Context, *PublishedQuestionRequest) (*PublishedQuestionResponse, error)
 	mustEmbedUnimplementedQuestionServiceServer()
 }
@@ -119,6 +130,9 @@ func (UnimplementedQuestionServiceServer) EditQuestion(context.Context, *EditQue
 }
 func (UnimplementedQuestionServiceServer) UpdateQuestion(context.Context, *UpdateQuestionRequest) (*UpdateQuestionResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateQuestion not implemented")
+}
+func (UnimplementedQuestionServiceServer) GetQueByUser(context.Context, *GetQueByUserRequest) (*GetQueByUserResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetQueByUser not implemented")
 }
 func (UnimplementedQuestionServiceServer) PublishedQuestion(context.Context, *PublishedQuestionRequest) (*PublishedQuestionResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method PublishedQuestion not implemented")
@@ -226,6 +240,24 @@ func _QuestionService_UpdateQuestion_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _QuestionService_GetQueByUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetQueByUserRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QuestionServiceServer).GetQueByUser(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/questionpb.QuestionService/GetQueByUser",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QuestionServiceServer).GetQueByUser(ctx, req.(*GetQueByUserRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _QuestionService_PublishedQuestion_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(PublishedQuestionRequest)
 	if err := dec(in); err != nil {
@@ -270,6 +302,10 @@ var QuestionService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UpdateQuestion",
 			Handler:    _QuestionService_UpdateQuestion_Handler,
+		},
+		{
+			MethodName: "GetQueByUser",
+			Handler:    _QuestionService_GetQueByUser_Handler,
 		},
 		{
 			MethodName: "PublishedQuestion",

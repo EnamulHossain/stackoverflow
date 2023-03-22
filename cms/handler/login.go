@@ -81,7 +81,7 @@ func (h Handler) LoginPostHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	if u.User.IsAdmin == false {
 
-		http.Redirect(w, r, "/", http.StatusSeeOther)
+		http.Redirect(w, r, "/users/dashboard", http.StatusSeeOther)
 
 	}
 

@@ -11,6 +11,7 @@ type QuestionStore interface {
 	DeleteQuestion(id int32) error
 	GetQuestionByID(id int32) (*storage.Question, error)
 	QuestionUpdate(u storage.Question) (*storage.Question, error)
+	ListQuestionByUser(id int32) ([]storage.Question, error)
 
 	QuestionPublished(u storage.Question) (*storage.Question, error)
 }
@@ -40,6 +41,14 @@ func (cq CoreQuestion) CreateQuestion(u storage.Question) (*storage.Question, er
 func (cq CoreQuestion) ListQuestion() ([]storage.Question, error) {
 
 	list, err := cq.store.ListQuestion()
+	if err != nil {
+		return nil, err
+	}
+	return list, nil
+}
+
+func (cq CoreQuestion) ListQuestionByUser(id int32) ([]storage.Question, error){
+	list, err := cq.store.ListQuestionByUser(id)
 	if err != nil {
 		return nil, err
 	}
