@@ -28,7 +28,9 @@ type AnswereCreateResponse struct {
 	Answere Answere `pb:"1"`
 }
 
-type AnswereListRequest struct{}
+type AnswereListRequest struct {
+	ID int `pb:"1"`
+}
 
 type AnswereListResponse struct {
 	Answere []Answere `pb:"1"`

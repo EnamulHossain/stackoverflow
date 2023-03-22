@@ -39,12 +39,12 @@ func (s PostgresStorage) CreateAnswere(u storage.Answere) (*storage.Answere, err
 
 
 
-const listanswereQuery = `SELECT * FROM answere WHERE deleted_at IS NULL`
+const listanswereQuery = `SELECT * FROM answere WHERE question_id = $1 AND deleted_at IS NULL`
 
-func (s PostgresStorage) ListAnswere() ([]storage.Answere, error) {
+func (s PostgresStorage) ListAnswere(id int32) ([]storage.Answere, error) {
 
 	var answere []storage.Answere
-	if err := s.DB.Select(&answere, listanswereQuery); err != nil {
+	if err := s.DB.Select(&answere, listanswereQuery,id); err != nil {
 		log.Fatal(err)
 		return nil, err
 	}

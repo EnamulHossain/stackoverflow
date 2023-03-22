@@ -139,9 +139,7 @@ func (h Handler) CreateAnswerePost(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "internal server error", http.StatusInternalServerError)
 	}
 
-	fmt.Println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
 	fmt.Println(uID,ac.QuestionId,ac.Answere)
-	fmt.Println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
 
 	_, err = h.answereSvc.AnswereCreate(r.Context(), &answerepb.AnswereCreateRequest{
 		UserId:     int32(uID),

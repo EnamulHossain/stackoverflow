@@ -3,13 +3,14 @@ package answere
 import (
 	// "context"
 	"context"
+	"fmt"
 	answerepb "stackoverflow/gunk/v1/answere"
 	"stackoverflow/usermgm/storage"
 )
 
 type CoreAnswere interface {
 	CreateAnswere(u storage.Answere) (*storage.Answere, error)
-	ListAnswere() ([]storage.Answere, error)
+	ListAnswere(id int32) ([]storage.Answere, error)
 	DeleteAnswere(id int32) error
 	GetAnswereByID(id int32) (*storage.Answere, error)
 	AnswereUpdate(u storage.Answere) (*storage.Answere, error)
@@ -57,10 +58,12 @@ func (as AnswereSvc) AnswereCreate(ctx context.Context, r *answerepb.AnswereCrea
 
 func (as AnswereSvc) AnswereList(ctx context.Context, r *answerepb.AnswereListRequest) (*answerepb.AnswereListResponse, error) {
 
-	answere, err := as.core.ListAnswere()
+
+	answere, err := as.core.ListAnswere(r.GetID())
 	if err != nil {
 		return nil, err
 	}
+
 	list := make([]*answerepb.Answere, len(answere))
 	for i, q := range answere {
 		list[i] = &answerepb.Answere{
