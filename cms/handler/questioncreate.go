@@ -12,7 +12,7 @@ import (
 	"github.com/justinas/nosurf"
 )
 
-type Question struct {
+type Questionc struct {
 	ID          int
 	UserId      int
 	CategoryId  int
@@ -20,7 +20,7 @@ type Question struct {
 	Description string
 }
 
-func (q Question) Validate() error {
+func (q Questionc) Validate() error {
 	return validation.ValidateStruct(&q,
 		validation.Field(&q.Title,
 			validation.Required.Error("The Title field is required."),
@@ -30,7 +30,7 @@ func (q Question) Validate() error {
 
 type QuestionForm struct {
 	Category  []CategoryCreate
-	Question  Question
+	Question  Questionc
 	FormError map[string]error
 	CSRFToken string
 }
@@ -67,7 +67,7 @@ func (h Handler) CreateQuestionPost(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var form QuestionForm
-	var qc Question
+	var qc Questionc
 
 	if err := h.decoder.Decode(&qc, r.PostForm); err != nil {
 		log.Println(err)

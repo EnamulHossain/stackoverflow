@@ -9,6 +9,7 @@ import (
 	"strings"
 	"text/template"
 
+	answerepb "stackoverflow/gunk/v1/answere"
 	categorypb "stackoverflow/gunk/v1/category"
 	questionpb "stackoverflow/gunk/v1/question"
 	userpb "stackoverflow/gunk/v1/user"
@@ -33,12 +34,17 @@ type questionService struct {
 	questionpb.QuestionServiceClient
 }
 
+type answereService struct {
+	answerepb.AnswereServiceClient
+}
+
 type Handler struct {
 	sessionManager *scs.SessionManager
 	decoder        *form.Decoder
 	usermgmSvc     usermgmService
 	categorySvc    categoryService
 	questionSvc    questionService
+	answereSvc     answereService
 	Templates      *template.Template
 	staticFiles    fs.FS
 	templateFiles  fs.FS
@@ -94,6 +100,7 @@ func NewHandler(sm *scs.SessionManager, formDecoder *form.Decoder, usermgmConn *
 		usermgmSvc:     usermgmService{userpb.NewUserServiceClient(usermgmConn)},
 		categorySvc:    categoryService{categorypb.NewCategoryServiceClient(usermgmConn)},
 		questionSvc:    questionService{questionpb.NewQuestionServiceClient(usermgmConn)},
+		answereSvc: answereService{answerepb.NewAnswereServiceClient(usermgmConn)},
 		staticFiles:    staticFiles,
 		templateFiles:  templateFiles,
 	}
@@ -117,6 +124,8 @@ func NewHandler(sm *scs.SessionManager, formDecoder *form.Decoder, usermgmConn *
 		r.Post("/login", h.LoginPostHandler)
 		r.Get("/logout", h.LogoutHandler)
 
+		r.Get("/question/list", h.ListQuestionForAll)
+
 	})
 
 	r.Handle("/static/*", http.StripPrefix("/static", http.FileServer(http.FS(h.staticFiles))))
@@ -124,11 +133,12 @@ func NewHandler(sm *scs.SessionManager, formDecoder *form.Decoder, usermgmConn *
 	r.Group(func(r chi.Router) {
 		r.Use(sm.LoadAndSave)
 		r.Use(h.Authentication)
-		// r.Use(h.AdminAuthentication)
 		r.Route("/users", func(r chi.Router) {
 			r.Get("/question/create", h.CreateQuestion)
 			r.Post("/question/store", h.CreateQuestionPost)
-			r.Get("/question/list", h.ListQuestion)
+
+			r.Get("/answere/create/{{.ID}}", h.CreateAnswere)
+			r.Post("/answere/store", h.CreateAnswerePost)
 
 		})
 
@@ -148,6 +158,8 @@ func NewHandler(sm *scs.SessionManager, formDecoder *form.Decoder, usermgmConn *
 			r.Get("/catergoy/create", h.CreateCategory)
 			r.Post("/category/store", h.CreateCategoryPost)
 			r.Get("/catergoy/list", h.ListCategory)
+
+			r.Get("/question/list", h.ListQuestion)
 
 		})
 	})

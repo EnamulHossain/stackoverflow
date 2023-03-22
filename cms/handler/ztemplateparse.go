@@ -99,3 +99,29 @@ func (c Handler) pareseQuestionListTemplate(w http.ResponseWriter, data any) {
 		log.Fatal(err)
 	}
 }
+
+
+
+func (c Handler) pareseQuestionListForAllTemplate(w http.ResponseWriter, data any) {
+	t := c.Templates.Lookup("qlistforall.html")
+	if t == nil {
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+	}
+	if err := t.Execute(w, data); err != nil {
+		log.Fatal(err)
+	}
+}
+
+
+// ANSWERE 
+
+
+func (c Handler) pareseCreateAnswereTemplate(w http.ResponseWriter, data any) {
+	t := c.Templates.Lookup("createanswere.html")
+	if t == nil {
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+	}
+	if err := t.Execute(w, data); err != nil {
+		log.Fatal(err)
+	}
+}

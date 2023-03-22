@@ -1,0 +1,51 @@
+{{template "header.html"}}
+
+
+<div id="content" class="">
+    <div id="mainbar" role="main" aria-labelledby="h-all-questions">
+        <div class="d-flex fw-wrap mb12">
+            <h1 class="flex--item fl1 fs-headline1 mr12 mb12">All Questions</h1>
+            <div class="aside-cta flex--item mb12 print:d-none">
+                <a href="/users/question/create" class="ws-nowrap s-btn s-btn__primary">
+                    Ask Question
+                </a>
+            </div>
+        </div>
+        <script type="application/json" data-role="module-args"
+            data-module-name="entry-points/questions/userQuestionList.mod">{"regularTagsString":"","moderatorTagsString":""}</script>
+        <script defer src="https://cdn.sstatic.net/Js/questions/userQuestionList.en.js?v=9e054838afaa"></script>
+
+
+
+        {{ range .Question }}
+
+
+        <div id="questions" class=" flush-left">
+            <div id="question-summary-75799602" class="s-post-summary    js-post-summary" data-post-id="75799602"
+                data-post-type-id="1">
+                <!-- <div class="s-post-summary--stats js-post-summary-stats">
+                    <div class="s-post-summary--stats-item has-answers " title="1 answer">
+                        <span class="s-post-summary--stats-item-number">1</span>
+                        <span class="s-post-summary--stats-item-unit">answer</span>
+                    </div>
+
+                </div> -->
+                <div class="s-post-summary--content">
+                    <h3 class="s-post-summary--content-title">
+                        <a href="/users/answere/create/{{.ID}}" class="s-link">{{.Title}}</a>
+                    </h3>
+                    <h6>{{.CategoryId}}</h6>
+                    <br>
+                    <h5 class="s-post-summary"> {{.Description}}</h5>
+                </div>
+            </div>
+        </div>
+
+        {{end}}
+
+
+    </div>
+</div>
+
+
+{{ template "footer.html"}}

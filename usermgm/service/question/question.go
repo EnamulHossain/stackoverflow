@@ -95,6 +95,7 @@ func (qs QuestionSvc) EditQuestion(ctx context.Context, r *questionpb.EditQuesti
 	return &questionpb.EditQuestionResponse{
 		Question: &questionpb.Question{
 			ID:          int32(res.ID),
+			UserId:      int32(res.UserId),
 			CategoryId:  int32(res.CategoryId),
 			Title:       res.Title,
 			Description: res.Description,
