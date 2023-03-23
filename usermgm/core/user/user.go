@@ -107,7 +107,6 @@ func (cu CoreUser) DeleteUser(id int32) error{
 func (cu CoreUser) GetUserByID(id int32) (*storage.User, error) {
 	user, err := cu.store.GetUserByID(id)
 	if err != nil {
-		fmt.Println("errrrrrrrrrrrrrr", err)
 		return user,err
 	}
 

@@ -35,7 +35,6 @@ func (s PostgresStorage) CreateQuestion(u storage.Question) (*storage.Question, 
 	if u.ID == 0 {
 		return nil, fmt.Errorf("unable to insert category into db")
 	}
-	fmt.Println("create question response", u)
 	return &u, nil
 }
 

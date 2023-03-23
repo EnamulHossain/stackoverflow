@@ -87,8 +87,6 @@ func (h Handler) RegisterPost(w http.ResponseWriter, r *http.Request) {
 		Username:  ru.Username,
 		Email:     ru.Email,
 		Password:  ru.Password,
-		IsActive:  ru.IsActive,
-		IsAdmin:   false,
 	})
 	if err != nil {
 		log.Println(err)
@@ -136,8 +134,6 @@ func (h Handler) AdminRegisterPost(w http.ResponseWriter, r *http.Request) {
 		Username:  ru.Username,
 		Email:     ru.Email,
 		Password:  ru.Password,
-		IsActive:  ru.IsActive,
-		IsAdmin:   true,
 	})
 	if err != nil {
 		log.Println(err)

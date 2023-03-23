@@ -32,7 +32,6 @@ func (s PostgresStorage) CreateAnswere(u storage.Answere) (*storage.Answere, err
 	if u.ID == 0 {
 		return nil, fmt.Errorf("unable to insert answere into db")
 	}
-	fmt.Println("create answere response", u)
 	return &u, nil
 }
 

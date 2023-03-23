@@ -120,7 +120,6 @@ func (h Handler) CreateAnswerePost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Println(r.PostForm)
 
 	var form AnswereForm
 	var ac Answere

@@ -21,12 +21,14 @@ const registerQuery = `INSERT INTO users (
 	:username,
 	:email,
 	:password,
-	:is_active,
-	:is_admin
+	true,
+	false
 ) RETURNING *`
 
 func (s PostgresStorage) Register(u storage.User) (*storage.User, error) {
 	stmt, err := s.DB.PrepareNamed(registerQuery)
+
+
 	if err != nil {
 		return nil, err
 	}
@@ -55,8 +57,8 @@ const adminregisterQuery = `INSERT INTO users (
 	:username,
 	:email,
 	:password,
-	:is_active,
-	:is_admin
+	true,
+	true
 ) RETURNING *`
 
 func (s PostgresStorage) AdminRegister(u storage.User) (*storage.User, error) {

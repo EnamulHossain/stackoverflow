@@ -19,7 +19,10 @@ require (
 	google.golang.org/protobuf v1.29.0
 )
 
-require google.golang.org/grpc v1.52.0
+require (
+	github.com/google/go-cmp v0.5.9
+	google.golang.org/grpc v1.52.0
+)
 
 require (
 	github.com/Masterminds/goutils v1.1.1 // indirect

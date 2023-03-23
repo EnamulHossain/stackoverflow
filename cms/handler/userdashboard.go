@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 	questionpb "stackoverflow/gunk/v1/question"
@@ -68,7 +67,6 @@ func (h Handler) Userdashboard(w http.ResponseWriter, r *http.Request) {
 	}
 	// question list of this user  END
 
-	fmt.Println(dat)
 
 	Data := UserdashboardForm{
 		User:  R,

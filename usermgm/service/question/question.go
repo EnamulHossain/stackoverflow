@@ -146,9 +146,10 @@ func (qs QuestionSvc) ListQuestion(ctx context.Context, r *questionpb.ListQuesti
 		SearchTerm: r.GetSearchTerm(),
 		Offset:     int(r.GetOffset()),
 		Limit:      int(r.GetLimit()),
+
 	}
 
-	question, err := qs.core.ListQuestion(uf)
+	question, err := qs.core.ListQuestion(uf,)
 	if err != nil {
 		return nil, err
 	}
