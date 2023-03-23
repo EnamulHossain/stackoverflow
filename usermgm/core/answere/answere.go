@@ -7,7 +7,8 @@ import (
 
 type AnswereStore interface {
 	CreateAnswere(u storage.Answere) (*storage.Answere, error)
-	ListAnswere(id int32) ([]storage.Answere, error)
+	// ListAnswere(id int32) ([]storage.Answere, error)
+	ListAnswere(id int32,uf storage.UserFilter) ([]storage.Answere, error)
 	DeleteAnswere(id int32) error
 	GetAnswereByID(id int32) (*storage.Answere, error)
 	AnswereUpdate(u storage.Answere) (*storage.Answere, error)
@@ -38,8 +39,8 @@ func (ca CoreAnswere) CreateAnswere(u storage.Answere) (*storage.Answere, error)
 }
 
 
-func (ca CoreAnswere) ListAnswere(id int32) ([]storage.Answere, error) {
-	list, err := ca.store.ListAnswere(id)
+func (ca CoreAnswere) ListAnswere(id int32,uf storage.UserFilter) ([]storage.Answere, error) {
+	list, err := ca.store.ListAnswere(id,uf)
 	if err != nil {
 		return nil, err
 	}

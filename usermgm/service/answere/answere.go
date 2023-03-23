@@ -9,7 +9,8 @@ import (
 
 type CoreAnswere interface {
 	CreateAnswere(u storage.Answere) (*storage.Answere, error)
-	ListAnswere(id int32) ([]storage.Answere, error)
+	// ListAnswere(id int32) ([]storage.Answere, error)
+	ListAnswere(id int32,uf storage.UserFilter) ([]storage.Answere, error)
 	DeleteAnswere(id int32) error
 	GetAnswereByID(id int32) (*storage.Answere, error)
 	AnswereUpdate(u storage.Answere) (*storage.Answere, error)
@@ -57,8 +58,12 @@ func (as AnswereSvc) AnswereCreate(ctx context.Context, r *answerepb.AnswereCrea
 
 func (as AnswereSvc) AnswereList(ctx context.Context, r *answerepb.AnswereListRequest) (*answerepb.AnswereListResponse, error) {
 
+	uf := storage.UserFilter{
+		Offset:     int(r.GetOffset()),
+		Limit:      int(r.GetLimit()),
+	}
 
-	answere, err := as.core.ListAnswere(r.GetID())
+	answere, err := as.core.ListAnswere(r.GetID(),uf)
 	if err != nil {
 		return nil, err
 	}

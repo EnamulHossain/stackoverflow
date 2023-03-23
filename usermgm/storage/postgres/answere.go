@@ -39,12 +39,18 @@ func (s PostgresStorage) CreateAnswere(u storage.Answere) (*storage.Answere, err
 
 
 
-const listanswereQuery = `SELECT * FROM answere WHERE question_id = $1 AND deleted_at IS NULL`
+const listanswereQuery = `SELECT * FROM answere WHERE question_id = $1 AND deleted_at IS NULL
+							 ORDER BY id ASC
+								OFFSET $2
+								LIMIT $3`
 
-func (s PostgresStorage) ListAnswere(id int32) ([]storage.Answere, error) {
+func (s PostgresStorage) ListAnswere(id int32,uf storage.UserFilter) ([]storage.Answere, error) {
 
 	var answere []storage.Answere
-	if err := s.DB.Select(&answere, listanswereQuery,id); err != nil {
+	if uf.Limit == 0 {
+		uf.Limit = 15
+	}
+	if err := s.DB.Select(&answere, listanswereQuery,id, uf.Offset, uf.Limit); err != nil {
 		log.Fatal(err)
 		return nil, err
 	}
