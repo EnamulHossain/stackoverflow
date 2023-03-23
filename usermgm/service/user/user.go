@@ -36,8 +36,6 @@ func (us UserSvc) Register(ctx context.Context, r *userpb.RegisterRequest) (*use
 		Email:     r.GetEmail(),
 		Username:  r.GetUsername(),
 		Password:  r.GetPassword(),
-		IsAdmin:   false,
-		IsActive:  true,
 	}
 
 	if err := user.Validate(); err != nil {
@@ -57,7 +55,7 @@ func (us UserSvc) Register(ctx context.Context, r *userpb.RegisterRequest) (*use
 			Username:  u.Username,
 			Email:     u.Email,
 			IsAdmin:   false,
-			IsActive:  u.IsActive,
+			IsActive:  true,
 		},
 	}, nil
 }
@@ -69,8 +67,6 @@ func (us UserSvc) AdminRegister(ctx context.Context, r *userpb.AdminRegisterRequ
 		Email:     r.GetEmail(),
 		Username:  r.GetUsername(),
 		Password:  r.GetPassword(),
-		IsAdmin:   true,
-		IsActive:  true,
 	}
 
 	if err := user.Validate(); err != nil {

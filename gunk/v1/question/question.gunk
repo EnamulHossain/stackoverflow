@@ -30,7 +30,11 @@ type createQuestionRequest struct {
 }
 
 type createQuestionResponse struct {
-	Question Question `pb:"1"`
+	ID          int    `pb:"1"`
+	UserId      int    `pb:"2"`
+	CategoryId  int    `pb:"3"`
+	Title       string `pb:"4"`
+	Description string `pb:"5"`
 }
 
 type ListQuestionRequest struct {

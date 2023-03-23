@@ -48,42 +48,12 @@ func (qs QuestionSvc) CreateQuestion(ctx context.Context, r *questionpb.CreateQu
 	}
 
 	return &questionpb.CreateQuestionResponse{
-		Question: &questionpb.Question{
-			ID:          int32(u.ID),
-			UserId:      int32(u.UserId),
-			CategoryId:  int32(u.CategoryId),
-			Title:       u.Title,
-			Description: u.Description,
-		},
-	}, nil
-}
-
-func (qs QuestionSvc) ListQuestion(ctx context.Context, r *questionpb.ListQuestionRequest) (*questionpb.ListQuestionResponse, error) {
-
-	uf := storage.UserFilter{
-		SearchTerm: r.GetSearchTerm(),
-		Offset:     int(r.GetOffset()),
-		Limit:      int(r.GetLimit()),
-	}
-	question, err := qs.core.ListQuestion(uf)
-	if err != nil {
-		return nil, err
-	}
-	list := make([]*questionpb.Question, len(question))
-	for i, q := range question {
-		list[i] = &questionpb.Question{
-			ID:          int32(q.ID),
-			UserId:      int32(q.UserId),
-			CategoryId:  int32(q.CategoryId),
-			Title:       q.Title,
-			Description: q.Description,
-			Name:        q.Name,
-		}
-	}
-
-	return &questionpb.ListQuestionResponse{
-		Questions: list,
-	}, nil
+		ID:          int32(u.ID),
+		UserId:      int32(u.UserId),
+		CategoryId:  int32(u.CategoryId),
+		Title:       u.Title,
+		Description: u.Description,
+	},nil
 }
 
 func (qs QuestionSvc) GetQueByUser(ctx context.Context, r *questionpb.GetQueByUserRequest) (*questionpb.GetQueByUserResponse, error) {
@@ -167,4 +137,35 @@ func (qs QuestionSvc) PublishedQuestion(ctx context.Context, r *questionpb.Publi
 	}
 
 	return &questionpb.PublishedQuestionResponse{}, nil
+}
+
+
+
+func (qs QuestionSvc) ListQuestion(ctx context.Context, r *questionpb.ListQuestionRequest) (*questionpb.ListQuestionResponse, error) {
+	uf := storage.UserFilter{
+		SearchTerm: r.GetSearchTerm(),
+		Offset:     int(r.GetOffset()),
+		Limit:      int(r.GetLimit()),
+	}
+
+	question, err := qs.core.ListQuestion(uf)
+	if err != nil {
+		return nil, err
+	}
+
+	list := make([]*questionpb.Question, len(question))
+		for i, c := range question {
+			list[i] =&questionpb.Question{
+				ID:          int32(c.ID),
+				UserId:      int32(c.UserId),
+				CategoryId:  int32(c.CategoryId),
+				Name:        c.Name,
+				Title:       c.Title,
+				Description: c.Description,
+			}
+		}
+
+		return &questionpb.ListQuestionResponse{
+			Questions: list,
+		},nil
 }

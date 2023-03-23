@@ -26,8 +26,6 @@ type RegisterRequest struct {
 	Username  string `pb:"3"`
 	Email     string `pb:"4"`
 	Password  string `pb:"5"`
-	IsActive  bool   `pb:"6"`
-	IsAdmin   bool   `pb:"7"`
 }
 
 type RegisterResponse struct {
@@ -40,8 +38,6 @@ type AdminRegisterRequest struct {
 	Username  string `pb:"3"`
 	Email     string `pb:"4"`
 	Password  string `pb:"5"`
-	IsActive  bool   `pb:"6"`
-	IsAdmin   bool   `pb:"7"`
 }
 
 type AdminRegisterResponse struct {
