@@ -1,6 +1,7 @@
 package postgres
 
 import (
+	"sort"
 	"stackoverflow/usermgm/storage"
 	"testing"
 
@@ -254,6 +255,9 @@ func TestPostgresStorage_ListCategory(t *testing.T) {
 			opts := cmp.Options{
 				cmpopts.IgnoreFields(storage.Category{}, "ID", "CreatedAt", "UpdatedAt", "DeletedAt"),
 			}
+			sort.SliceStable(got, func(i, j int) bool {
+				return got[i].ID < got[j].ID
+			})
 
 			if !cmp.Equal(got, tt.want, opts...) {
 				t.Errorf("PostgresStorage.ListCategory() diff = %v", cmp.Diff(got, tt.want, opts...))
