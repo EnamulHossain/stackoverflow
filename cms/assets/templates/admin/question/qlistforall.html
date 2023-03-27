@@ -17,6 +17,8 @@
 
 
 
+        
+
         {{ range .Question }}
 
 
@@ -34,7 +36,7 @@
                     <h3 class="s-post-summary--content-title">
                         <a href="/users/answere/create/{{.ID}}" class="s-link">{{.Title}}</a>
                     </h3>
-                    <h6>{{.CategoryId}}</h6>
+                    <h6>Category ::  {{.Name}}</h6>
                     <br>
                     <h5 class="s-post-summary"> {{.Description}}</h5>
                 </div>

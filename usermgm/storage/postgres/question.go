@@ -6,8 +6,6 @@ import (
 	"stackoverflow/usermgm/storage"
 )
 
-
-
 const CreateQuestion = `INSERT INTO question (
 	user_id,
 	category_id,
@@ -38,44 +36,46 @@ func (s PostgresStorage) CreateQuestion(u storage.Question) (*storage.Question, 
 	return &u, nil
 }
 
-
 // const listcqueQuery = `SELECT * FROM question WHERE deleted_at IS NULL`
 
-const listcqueQuery = `SELECT c.name, q.id, q.user_id, q.category_id, q.title, q.description
-		FROM category c
-		LEFT JOIN question q ON c.id = q.category_id
-		WHERE c.name ILIKE '%' || $1 || '%' OR q.title ILIKE '%' || $1 || '%' OR q.description ILIKE '%' || $1 || '%'
-		ORDER BY q.id DESC
-		OFFSET $2
-		LIMIT $3;
+const listcqueQuery = `
+		SELECT c.name, q.id, q.user_id, q.category_id, q.title, q.description
+		FROM question q
+		LEFT JOIN category c ON c.id = q.category_id
+		WHERE c.name ILIKE '%%' || $1 || '%%' OR q.title ILIKE '%%' || $1 || '%%' OR q.description ILIKE '%%' || $1 || '%%'
+		LIMIT $2
+		OFFSET $3;
 		`
+
+// Todo: Question List
 
 func (s PostgresStorage) ListQuestion(uf storage.UserFilter) ([]storage.Question, error) {
 
+	fmt.Println("storage question list")
+
 	var question []storage.Question
-	if err := s.DB.Select(&question, listcqueQuery, uf.SearchTerm, uf.Offset, uf.Limit); err != nil {
+	if uf.Limit == 0 {
+		uf.Limit = 15
+	}
+	if err := s.DB.Select(&question, listcqueQuery, uf.SearchTerm, uf.Limit, uf.Offset); err != nil {
 		log.Fatal(err)
 		return nil, err
 	}
+	fmt.Println(question)
 	return question, nil
 }
-
-
 
 const listqueByuserQuery = `SELECT * FROM question WHERE user_id = $1 AND deleted_at IS NULL`
 
 func (s PostgresStorage) ListQuestionByUser(id int32) ([]storage.Question, error) {
 
 	var question []storage.Question
-	if err := s.DB.Select(&question, listqueByuserQuery,id); err != nil {
+	if err := s.DB.Select(&question, listqueByuserQuery, id); err != nil {
 		log.Fatal(err)
 		return nil, err
 	}
 	return question, nil
 }
-
-
-
 
 const deleteQuestionByIdQuery = `UPDATE question SET deleted_at = CURRENT_TIMESTAMP WHERE id=$1 AND deleted_at IS NULL`
 
@@ -99,8 +99,6 @@ func (s PostgresStorage) DeleteQuestion(id int32) error {
 	return nil
 }
 
-
-
 const getQuestionByID = `SELECT * FROM question WHERE id=$1 AND deleted_at IS NULL`
 
 func (s PostgresStorage) GetQuestionByID(id int32) (*storage.Question, error) {
@@ -112,9 +110,6 @@ func (s PostgresStorage) GetQuestionByID(id int32) (*storage.Question, error) {
 
 	return &u, nil
 }
-
-
-
 
 const QuestionUpdate = `
 UPDATE
@@ -139,10 +134,6 @@ func (s PostgresStorage) QuestionUpdate(u storage.Question) (*storage.Question, 
 
 	return &u, nil
 }
-
-
-
-
 
 const QuestionPublished = `
 UPDATE

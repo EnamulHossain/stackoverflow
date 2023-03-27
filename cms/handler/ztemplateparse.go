@@ -31,6 +31,18 @@ func (c Handler) pareseHomeTemplate(w http.ResponseWriter, data any) {
 }
 
 
+
+func (c Handler) pareseAboutTemplate(w http.ResponseWriter, data any) {
+	t := c.Templates.Lookup("about.html")
+	if t == nil {
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+	}
+
+	if err := t.Execute(w, data); err != nil {
+		log.Fatal(err)
+	}
+}
+
 func (c Handler) pareseUserDashboardTemplate(w http.ResponseWriter, data any) {
 	t := c.Templates.Lookup("userdashboard.html")
 	if t == nil {

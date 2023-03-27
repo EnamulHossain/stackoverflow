@@ -45,6 +45,8 @@ func (cq CoreQuestion) ListQuestion(uf storage.UserFilter) ([]storage.Question, 
 	if err != nil {
 		return nil, err
 	}
+	fmt.Println("########## q list",list)
+	
 	return list, nil
 }
 

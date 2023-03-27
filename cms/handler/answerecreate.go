@@ -9,9 +9,7 @@ import (
 	"strconv"
 	"strings"
 
-	// questionpb "stackoverflow/gunk/v1/question"
 
-	// "github.com/go-chi/chi"
 	validation "github.com/go-ozzo/ozzo-validation/v4"
 	"github.com/justinas/nosurf"
 )
@@ -63,8 +61,30 @@ func (h Handler) CreateAnswere(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// ANSWERE LIST Start
+
+	if err := r.ParseForm(); err != nil {
+		log.Println(err)
+		http.Error(w, "internal server error", http.StatusInternalServerError)
+	}
+	CurrentPage := 1
+	pn := r.FormValue("page")
+	if pn != "" {
+		CurrentPage, err = strconv.Atoi(pn)
+		if err != nil {
+			CurrentPage = 1
+		}
+	}
+
+	offset := 0
+	if CurrentPage > 1 {
+		offset = (CurrentPage * LimitPerPage) - LimitPerPage
+	}
+
+	
 	re, err := h.answereSvc.AnswereList(r.Context(), &answerepb.AnswereListRequest{
-		ID: int32(uid),
+		ID:     int32(uid),
+		Limit:  LimitPerPage,
+		Offset: int32(offset),
 	})
 
 	if err != nil {

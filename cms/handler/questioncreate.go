@@ -18,6 +18,7 @@ type Questionc struct {
 	CategoryId  int
 	Title       string
 	Description string
+	Name        string
 }
 
 func (q Questionc) Validate() error {

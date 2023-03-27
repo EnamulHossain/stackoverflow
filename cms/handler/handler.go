@@ -100,7 +100,7 @@ func NewHandler(sm *scs.SessionManager, formDecoder *form.Decoder, usermgmConn *
 		usermgmSvc:     usermgmService{userpb.NewUserServiceClient(usermgmConn)},
 		categorySvc:    categoryService{categorypb.NewCategoryServiceClient(usermgmConn)},
 		questionSvc:    questionService{questionpb.NewQuestionServiceClient(usermgmConn)},
-		answereSvc: answereService{answerepb.NewAnswereServiceClient(usermgmConn)},
+		answereSvc:     answereService{answerepb.NewAnswereServiceClient(usermgmConn)},
 		staticFiles:    staticFiles,
 		templateFiles:  templateFiles,
 	}
@@ -118,6 +118,7 @@ func NewHandler(sm *scs.SessionManager, formDecoder *form.Decoder, usermgmConn *
 	r.Group(func(r chi.Router) {
 		r.Use(sm.LoadAndSave)
 		r.Get("/", h.Home)
+		r.Get("/about", h.About)
 		r.Get("/register", h.Register)
 		r.Post("/register", h.RegisterPost)
 		r.Get("/login", h.Login)
@@ -135,8 +136,7 @@ func NewHandler(sm *scs.SessionManager, formDecoder *form.Decoder, usermgmConn *
 		r.Use(h.Authentication)
 		r.Route("/users", func(r chi.Router) {
 
-			r.Get("/dashboard",h.Userdashboard)
-
+			r.Get("/dashboard", h.Userdashboard)
 
 			r.Get("/question/create", h.CreateQuestion)
 			r.Post("/question/store", h.CreateQuestionPost)

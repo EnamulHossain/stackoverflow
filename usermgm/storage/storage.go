@@ -83,16 +83,16 @@ func (c Category) Validate() error {
 }
 
 type Question struct {
-	ID          int          `json:"id" form:"-" db:"id"`
-	UserId      int          `json:"user_id" db:"user_id"`
-	CategoryId  int          `json:"category_id" db:"category_id"`
-	Name        string       `json:"name" db:"name"`
-	Title       string       `json:"title" db:"title"`
-	Description string       `json:"description" db:"description"`
-	PublishedAt sql.NullTime `json:"published_at" db:"published_at"`
-	CreatedAt   time.Time    `json:"created_at" db:"created_at"`
-	UpdatedAt   time.Time    `json:"updated_at" db:"updated_at"`
-	DeletedAt   sql.NullTime `json:"deleted_at" db:"deleted_at"`
+	ID          int            `json:"id" form:"-" db:"id"`
+	UserId      int            `json:"user_id" db:"user_id"`
+	CategoryId  int            `json:"category_id" db:"category_id"`
+	Name        sql.NullString `json:"name" db:"name"`
+	Title       string         `json:"title" db:"title"`
+	Description string         `json:"description" db:"description"`
+	PublishedAt sql.NullTime   `json:"published_at" db:"published_at"`
+	CreatedAt   time.Time      `json:"created_at" db:"created_at"`
+	UpdatedAt   time.Time      `json:"updated_at" db:"updated_at"`
+	DeletedAt   sql.NullTime   `json:"deleted_at" db:"deleted_at"`
 }
 
 func (q Question) Validate() error {

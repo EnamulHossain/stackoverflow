@@ -3,6 +3,7 @@ package question
 import (
 	"context"
 	"database/sql"
+	"fmt"
 	questionpb "stackoverflow/gunk/v1/question"
 	"stackoverflow/usermgm/storage"
 )
@@ -142,6 +143,9 @@ func (qs QuestionSvc) PublishedQuestion(ctx context.Context, r *questionpb.Publi
 
 
 func (qs QuestionSvc) ListQuestion(ctx context.Context, r *questionpb.ListQuestionRequest) (*questionpb.ListQuestionResponse, error) {
+
+	fmt.Println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+	
 	uf := storage.UserFilter{
 		SearchTerm: r.GetSearchTerm(),
 		Offset:     int(r.GetOffset()),
@@ -149,10 +153,15 @@ func (qs QuestionSvc) ListQuestion(ctx context.Context, r *questionpb.ListQuesti
 
 	}
 
-	question, err := qs.core.ListQuestion(uf,)
+	fmt.Println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@",uf)
+
+
+	question, err := qs.core.ListQuestion(uf)
 	if err != nil {
 		return nil, err
 	}
+
+	fmt.Println("########## q list",question)
 
 	list := make([]*questionpb.Question, len(question))
 		for i, c := range question {
@@ -160,11 +169,14 @@ func (qs QuestionSvc) ListQuestion(ctx context.Context, r *questionpb.ListQuesti
 				ID:          int32(c.ID),
 				UserId:      int32(c.UserId),
 				CategoryId:  int32(c.CategoryId),
-				Name:        c.Name,
+				Name:        c.Name.String,
 				Title:       c.Title,
 				Description: c.Description,
 			}
 		}
+		
+	fmt.Println("########## q list",list)
+
 
 		return &questionpb.ListQuestionResponse{
 			Questions: list,
