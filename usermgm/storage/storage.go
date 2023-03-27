@@ -2,6 +2,7 @@ package storage
 
 import (
 	"database/sql"
+	"regexp"
 	"time"
 
 	validation "github.com/go-ozzo/ozzo-validation/v4"
@@ -30,15 +31,21 @@ type User struct {
 }
 
 func (u User) Validate() error {
+	len := validation.Length(2, 20).Error
+	noSpaces := validation.Match(regexp.MustCompile(`^\S*$`)).Error
 	return validation.ValidateStruct(&u,
 		validation.Field(&u.FirstName,
 			validation.Required.Error("The first name field is required."),
+			len("The FirstName field must be between 2 to 20 characters."),
+
 		),
 		validation.Field(&u.LastName,
 			validation.Required.Error("The last name field is required."),
+			len("The LastName field must be between 2 to 20 characters."),
 		),
 		validation.Field(&u.Username,
 			validation.Required.When(u.ID == 0).Error("The username field is required."),
+			noSpaces("The username field cannot contain any space character."),
 		),
 		validation.Field(&u.Email,
 			validation.Required.When(u.ID == 0).Error("The email field is required."),
@@ -75,9 +82,12 @@ type Category struct {
 }
 
 func (c Category) Validate() error {
+	len := validation.Length(2, 100).Error
+
 	return validation.ValidateStruct(&c,
 		validation.Field(&c.Name,
 			validation.Required.Error("The name field is required."),
+			len("The Category Name field must be between 2 to 100 characters."),
 		),
 	)
 }

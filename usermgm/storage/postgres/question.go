@@ -51,7 +51,6 @@ const listcqueQuery = `
 
 func (s PostgresStorage) ListQuestion(uf storage.UserFilter) ([]storage.Question, error) {
 
-	fmt.Println("storage question list")
 
 	var question []storage.Question
 	if uf.Limit == 0 {
@@ -61,7 +60,6 @@ func (s PostgresStorage) ListQuestion(uf storage.UserFilter) ([]storage.Question
 		log.Fatal(err)
 		return nil, err
 	}
-	fmt.Println(question)
 	return question, nil
 }
 

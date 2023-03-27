@@ -527,19 +527,21 @@ func TestPostgresStorage_ListQuestion(t *testing.T) {
 		{
 			UserId: int(UserId),
 			CategoryId: int(catid),
-			Name:  catname,
+			Name:   sql.NullString{String: catname, Valid: true},
 			Title: "Question Title",
 			Description: "Question Description",
 		},
 		{
 			UserId:      int(UserId),
 			CategoryId:  int(catid),
+			Name:   sql.NullString{String: catname, Valid: true},
 			Title:       "Question Title1",
 			Description: "Question Description1",
 		},
 		{
 			UserId:      int(UserId),
 			CategoryId:  int(catid),
+			Name:   sql.NullString{String: catname, Valid: true},
 			Title:       "Question Title2",
 			Description: "Question Description2",
 		},
@@ -560,30 +562,26 @@ func TestPostgresStorage_ListQuestion(t *testing.T) {
 	}{
 		{
 			name: "Question List",
-			in:   storage.UserFilter{
-				SearchTerm: "",
-				Offset:     0,
-				Limit:      10,
-			},
+			in:   storage.UserFilter{},
 			want: []storage.Question{
 				{
 					UserId: int(UserId),
 					CategoryId: int(catid),
-					Name:  catname,
+					Name:   sql.NullString{String: catname, Valid: true},
 					Title: "Question Title",
 					Description: "Question Description",
 				},
 				{
 					UserId: int(UserId),
 					CategoryId: int(catid),
-					Name:  catname,
+					Name:   sql.NullString{String: catname, Valid: true},
 					Title: "Question Title1",
 					Description: "Question Description1",
 				},
 				{
 					UserId:      int(UserId),
 					CategoryId:  int(catid),
-					Name:  catname,
+					Name:   sql.NullString{String: catname, Valid: true},
 					Title:       "Question Title2",
 					Description: "Question Description2",
 				},

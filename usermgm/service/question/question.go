@@ -3,7 +3,6 @@ package question
 import (
 	"context"
 	"database/sql"
-	"fmt"
 	questionpb "stackoverflow/gunk/v1/question"
 	"stackoverflow/usermgm/storage"
 )
@@ -144,7 +143,6 @@ func (qs QuestionSvc) PublishedQuestion(ctx context.Context, r *questionpb.Publi
 
 func (qs QuestionSvc) ListQuestion(ctx context.Context, r *questionpb.ListQuestionRequest) (*questionpb.ListQuestionResponse, error) {
 
-	fmt.Println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
 	
 	uf := storage.UserFilter{
 		SearchTerm: r.GetSearchTerm(),
@@ -153,15 +151,12 @@ func (qs QuestionSvc) ListQuestion(ctx context.Context, r *questionpb.ListQuesti
 
 	}
 
-	fmt.Println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@",uf)
-
 
 	question, err := qs.core.ListQuestion(uf)
 	if err != nil {
 		return nil, err
 	}
 
-	fmt.Println("########## q list",question)
 
 	list := make([]*questionpb.Question, len(question))
 		for i, c := range question {
@@ -175,8 +170,6 @@ func (qs QuestionSvc) ListQuestion(ctx context.Context, r *questionpb.ListQuesti
 			}
 		}
 		
-	fmt.Println("########## q list",list)
-
 
 		return &questionpb.ListQuestionResponse{
 			Questions: list,

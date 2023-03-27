@@ -29,9 +29,9 @@ type AnswereCreateResponse struct {
 }
 
 type AnswereListRequest struct {
-	ID         int    `pb:"1"`
-	Limit      int    `pb:"2"`
-	Offset     int    `pb:"3"`
+	ID     int `pb:"1"`
+	Limit  int `pb:"2"`
+	Offset int `pb:"3"`
 }
 
 type AnswereListResponse struct {
