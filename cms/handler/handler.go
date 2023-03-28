@@ -145,6 +145,7 @@ func NewHandler(sm *scs.SessionManager, formDecoder *form.Decoder, usermgmConn *
 
 			r.Get("/answere/create/{{.ID}}", h.CreateAnswere)
 			r.Post("/answere/store", h.CreateAnswerePost)
+			r.Post("/answere/iscorrect", h.AnswereISPost)
 
 		})
 

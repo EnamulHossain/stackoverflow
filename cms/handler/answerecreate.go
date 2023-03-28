@@ -181,3 +181,28 @@ func (h Handler) CreateAnswerePost(w http.ResponseWriter, r *http.Request) {
 
 	http.Redirect(w, r, fmt.Sprintf("/users/answere/create/%d", ac.QuestionId), http.StatusSeeOther)
 }
+
+func (h Handler) AnswereISPost(w http.ResponseWriter, r *http.Request) {
+
+	if err := r.ParseForm(); err != nil {
+		log.Println(err)
+		http.Error(w, "internal server error", http.StatusInternalServerError)
+		return
+	}
+	id := r.FormValue("ID")
+
+	uid, err := strconv.Atoi(id)
+	if err != nil {
+		http.Error(w, "internal server error", http.StatusInternalServerError)
+	}
+
+	Res, err := h.answereSvc.CorrectAnswere(r.Context(), &answerepb.CorrectAnswereRequest{
+		ID:        int32(uid),
+	})
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	fmt.Println(Res)
+	http.Redirect(w,r, "/users/dashboard",http.StatusSeeOther)
+}
