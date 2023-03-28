@@ -43,7 +43,7 @@ type AnswereForm struct {
 func (h Handler) CreateAnswere(w http.ResponseWriter, r *http.Request) {
 
 	// zid := chi.URLParam(r, "ID")
-	// fmt.Println("yyyyyyyyyyyyyyyyyyyyyyyyyyy",zid)
+	// its not working
 
 	Url := r.URL.Path
 	id := strings.ReplaceAll(Url, "/users/answere/create/", "")

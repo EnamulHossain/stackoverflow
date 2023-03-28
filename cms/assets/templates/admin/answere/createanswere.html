@@ -36,16 +36,29 @@
 
             <div class="overflow-x-auto">
                 <table class="min-w-full divide-y-2 divide-gray-200 text-sm">
-
+                    
                     {{ range .An }}
                     <tbody class="divide-y divide-gray-200">
                         <tr>
+
+                            {{if eq $.USERID .UserId}}
                             <td class="sticky inset-y-0 left-0 bg-white px-4 py-2">
                                 <label class="sr-only" for="Row1">Row 1</label>
 
                                 <input class="h-5 w-5 rounded border-gray-300" type="checkbox" id="Row1" />
                             </td>
+                            {{end}}
+                            
                             <td class="whitespace-nowrap px-4 py-2 text-gray-700 ">{{.Answere}} </td>
+                            {{ if .IsCorrect}}
+                            <td class="d-flex items-center justify-center">
+                                <span class="text-gray-400 hover:text-gray-600 transition duration-150 ease-in-out">
+                                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                  </svg>
+                                </span>
+                            </td>
+                            {{end}}
                         </tr>
                     </tbody>
 

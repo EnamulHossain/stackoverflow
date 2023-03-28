@@ -7,6 +7,7 @@ import (
 	questionpb "stackoverflow/gunk/v1/question"
 	"strconv"
 	"strings"
+	"time"
 
 	validation "github.com/go-ozzo/ozzo-validation/v4"
 	"github.com/justinas/nosurf"
@@ -19,6 +20,7 @@ type Questionc struct {
 	Title       string
 	Description string
 	Name        string
+	PublishedAt time.Time
 }
 
 func (q Questionc) Validate() error {

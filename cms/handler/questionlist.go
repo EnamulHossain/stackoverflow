@@ -17,7 +17,6 @@ type questionListForm struct {
 
 
 func (h Handler) ListQuestion(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("*****************ADMIN*******************")
 	if err := r.ParseForm(); err != nil {
 		log.Println(err)
 		http.Error(w, "internal server error", http.StatusInternalServerError)
@@ -73,7 +72,6 @@ func (h Handler) ListQuestion(w http.ResponseWriter, r *http.Request) {
 
 func (h Handler) ListQuestionForAll(w http.ResponseWriter, r *http.Request) {
 
-	fmt.Println("###################  For All User #######################")
 
 	if err := r.ParseForm(); err != nil {
 		log.Println(err)

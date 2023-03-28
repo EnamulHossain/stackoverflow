@@ -138,6 +138,7 @@
         {{ range .QList }}
 
 
+
         <div id="questions" class=" flush-left">
             <div id="question-summary-75799602" class="s-post-summary    js-post-summary" data-post-id="75799602"
                 data-post-type-id="1">
@@ -155,12 +156,23 @@
                     <!-- <h6>{{.Name}}</h6> -->
                     <br>
                     <h5 class="s-post-summary"> {{.Description}}</h5>
-                    <a type="button"
-                    class="inline-block rounded bg-success px-6 pt-2.5 pb-2 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#14a44d] transition duration-150 ease-in-out hover:bg-success-600 hover:shadow-[0_8px_9px_-4px_rgba(20,164,77,0.3),0_4px_18px_0_rgba(20,164,77,0.2)] focus:bg-success-600 focus:shadow-[0_8px_9px_-4px_rgba(20,164,77,0.3),0_4px_18px_0_rgba(20,164,77,0.2)] focus:outline-none focus:ring-0 active:bg-success-700 active:shadow-[0_8px_9px_-4px_rgba(20,164,77,0.3),0_4px_18px_0_rgba(20,164,77,0.2)]">
-                    Published
-                    </a>
+                    {{ if .PublishedAt.IsZero }}
+
+                    <form action="/users/question/publish" method="post">
+                        <input type="hidden" name="csrf_token" value="{{$.CSRFToken}}">
+                        <input type="hidden" name="ID" value="{{.ID}}">
+                        <button type="submit" class="inline-block rounded bg-success px-6 pt-2.5 pb-2 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#14a44d] transition duration-150 ease-in-out hover:bg-success-600 hover:shadow-[0_8px_9px_-4px_rgba(20,164,77,0.3),0_4px_18px_0_rgba(20,164,77,0.2)] focus:bg-success-600 focus:shadow-[0_8px_9px_-4px_rgba(20,164,77,0.3),0_4px_18px_0_rgba(20,164,77,0.2)] focus:outline-none focus:ring-0 active:bg-success-700 active:shadow-[0_8px_9px_-4px_rgba(20,164,77,0.3),0_4px_18px_0_rgba(20,164,77,0.2)]">
+         
+                                Publish
+                            
+                        </button>
+                    </form>
+                    {{end}}
+
+
+
                 </div>
-               
+
             </div>
         </div>
 

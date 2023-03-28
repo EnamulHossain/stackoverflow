@@ -2,9 +2,11 @@ package question
 
 import (
 	"context"
-	"database/sql"
+	"fmt"
 	questionpb "stackoverflow/gunk/v1/question"
 	"stackoverflow/usermgm/storage"
+
+	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 type CoreQuestion interface {
@@ -53,7 +55,7 @@ func (qs QuestionSvc) CreateQuestion(ctx context.Context, r *questionpb.CreateQu
 		CategoryId:  int32(u.CategoryId),
 		Title:       u.Title,
 		Description: u.Description,
-	},nil
+	}, nil
 }
 
 func (qs QuestionSvc) GetQueByUser(ctx context.Context, r *questionpb.GetQueByUserRequest) (*questionpb.GetQueByUserResponse, error) {
@@ -62,6 +64,7 @@ func (qs QuestionSvc) GetQueByUser(ctx context.Context, r *questionpb.GetQueByUs
 	if err != nil {
 		return nil, err
 	}
+
 	list := make([]*questionpb.Question, len(question))
 	for i, q := range question {
 		list[i] = &questionpb.Question{
@@ -70,8 +73,12 @@ func (qs QuestionSvc) GetQueByUser(ctx context.Context, r *questionpb.GetQueByUs
 			CategoryId:  int32(q.CategoryId),
 			Title:       q.Title,
 			Description: q.Description,
+			Name:        q.Name.String,
+			PublishedAt: timestamppb.New(q.PublishedAt.Time),
 		}
+		fmt.Println(list)
 	}
+
 	return &questionpb.GetQueByUserResponse{
 		Questions: list,
 	}, nil
@@ -125,10 +132,6 @@ func (qs QuestionSvc) PublishedQuestion(ctx context.Context, r *questionpb.Publi
 
 	publishQuestion := storage.Question{
 		ID: int(r.GetID()),
-		PublishedAt: sql.NullTime{
-			Time:  r.PublishedAt.AsTime(),
-			Valid: false,
-		},
 	}
 
 	_, err := qs.core.QuestionPublished(publishQuestion)
@@ -139,39 +142,32 @@ func (qs QuestionSvc) PublishedQuestion(ctx context.Context, r *questionpb.Publi
 	return &questionpb.PublishedQuestionResponse{}, nil
 }
 
-
-
 func (qs QuestionSvc) ListQuestion(ctx context.Context, r *questionpb.ListQuestionRequest) (*questionpb.ListQuestionResponse, error) {
 
-	
 	uf := storage.UserFilter{
 		SearchTerm: r.GetSearchTerm(),
 		Offset:     int(r.GetOffset()),
 		Limit:      int(r.GetLimit()),
-
 	}
-
 
 	question, err := qs.core.ListQuestion(uf)
 	if err != nil {
 		return nil, err
 	}
 
-
 	list := make([]*questionpb.Question, len(question))
-		for i, c := range question {
-			list[i] =&questionpb.Question{
-				ID:          int32(c.ID),
-				UserId:      int32(c.UserId),
-				CategoryId:  int32(c.CategoryId),
-				Name:        c.Name.String,
-				Title:       c.Title,
-				Description: c.Description,
-			}
+	for i, c := range question {
+		list[i] = &questionpb.Question{
+			ID:          int32(c.ID),
+			UserId:      int32(c.UserId),
+			CategoryId:  int32(c.CategoryId),
+			Name:        c.Name.String,
+			Title:       c.Title,
+			Description: c.Description,
 		}
-		
+	}
 
-		return &questionpb.ListQuestionResponse{
-			Questions: list,
-		},nil
+	return &questionpb.ListQuestionResponse{
+		Questions: list,
+	}, nil
 }

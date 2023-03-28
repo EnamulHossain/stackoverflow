@@ -141,6 +141,7 @@ func NewHandler(sm *scs.SessionManager, formDecoder *form.Decoder, usermgmConn *
 
 			r.Get("/question/create", h.CreateQuestion)
 			r.Post("/question/store", h.CreateQuestionPost)
+			r.Post("/question/publish", h.Publish)
 
 			r.Get("/answere/create/{{.ID}}", h.CreateAnswere)
 			r.Post("/answere/store", h.CreateAnswerePost)

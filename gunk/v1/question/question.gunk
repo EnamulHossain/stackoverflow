@@ -14,12 +14,13 @@ type QuestionService interface {
 }
 
 type Question struct {
-	ID          int    `pb:"1"`
-	UserId      int    `pb:"2"`
-	CategoryId  int    `pb:"3"`
-	Title       string `pb:"4"`
-	Description string `pb:"5"`
-	Name        string `pb:"6"`
+	ID          int       `pb:"1"`
+	UserId      int       `pb:"2"`
+	CategoryId  int       `pb:"3"`
+	Title       string    `pb:"4"`
+	Description string    `pb:"5"`
+	Name        string    `pb:"6"`
+	PublishedAt time.Time `pb:"7"`
 }
 
 type createQuestionRequest struct {
