@@ -50,7 +50,7 @@ func (cc CoreCategory) DeleteCategory(id int32) error {
 	err := cc.store.DeleteCategory(id)
 
 	if err != nil {
-		return err
+		return  fmt.Errorf("unable to delete")
 	}
 
 	return nil
@@ -60,7 +60,7 @@ func (cu CoreCategory) GetCategoryByID(id int32) (*storage.Category, error) {
 	
 	categories, err := cu.store.GetCategoryByID(id)
 	if err != nil {
-		return categories, err
+		return categories,fmt.Errorf("unable to GetCategoryByID")
 	}
 
 	return categories, err

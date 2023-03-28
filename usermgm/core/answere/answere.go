@@ -7,12 +7,10 @@ import (
 
 type AnswereStore interface {
 	CreateAnswere(u storage.Answere) (*storage.Answere, error)
-	// ListAnswere(id int32) ([]storage.Answere, error)
-	ListAnswere(id int32,uf storage.UserFilter) ([]storage.Answere, error)
+	ListAnswere(id int32, uf storage.UserFilter) ([]storage.Answere, error)
 	DeleteAnswere(id int32) error
 	GetAnswereByID(id int32) (*storage.Answere, error)
 	AnswereUpdate(u storage.Answere) (*storage.Answere, error)
-
 	CorrectAnswere(u storage.Answere) (*storage.Answere, error)
 }
 
@@ -26,48 +24,41 @@ func NewCoreAnswere(as AnswereStore) *CoreAnswere {
 	}
 }
 
-
 func (ca CoreAnswere) CreateAnswere(u storage.Answere) (*storage.Answere, error) {
 	cc, err := ca.store.CreateAnswere(u)
 	if err != nil {
 		return nil, err
 	}
 	if cc == nil {
-		return nil, fmt.Errorf("unable to Answere")
+		return nil, fmt.Errorf("unable to create Answere")
 	}
 	return cc, nil
 }
 
-
-func (ca CoreAnswere) ListAnswere(id int32,uf storage.UserFilter) ([]storage.Answere, error) {
-	list, err := ca.store.ListAnswere(id,uf)
+func (ca CoreAnswere) ListAnswere(id int32, uf storage.UserFilter) ([]storage.Answere, error) {
+	list, err := ca.store.ListAnswere(id, uf)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("unable to list")
 	}
 	return list, nil
 }
-
 
 func (ca CoreAnswere) DeleteAnswere(id int32) error {
 	err := ca.store.DeleteAnswere(id)
 
 	if err != nil {
-		return err
+		return  fmt.Errorf("unable to delete")
 	}
-
 	return nil
 }
 
-
-func (ca CoreAnswere) GetAnswereByID(id int32) (*storage.Answere, error){
+func (ca CoreAnswere) GetAnswereByID(id int32) (*storage.Answere, error) {
 	answere, err := ca.store.GetAnswereByID(id)
 	if err != nil {
 		return answere, err
 	}
-
 	return answere, err
 }
-
 
 func (ca CoreAnswere) AnswereUpdate(u storage.Answere) (*storage.Answere, error) {
 	answere, err := ca.store.AnswereUpdate(u)
@@ -78,14 +69,10 @@ func (ca CoreAnswere) AnswereUpdate(u storage.Answere) (*storage.Answere, error)
 	if answere == nil {
 		return nil, fmt.Errorf("unable to update")
 	}
-
 	return answere, err
 }
 
-
-
 func (ca CoreAnswere) CorrectAnswere(u storage.Answere) (*storage.Answere, error) {
-
 
 	answere, err := ca.store.CorrectAnswere(u)
 	if err != nil {
@@ -93,10 +80,8 @@ func (ca CoreAnswere) CorrectAnswere(u storage.Answere) (*storage.Answere, error
 	}
 
 	if answere == nil {
-		return nil, fmt.Errorf("unable to update")
+		return nil, fmt.Errorf("unable to update as correct")
 	}
-
 	return answere, err
-
 
 }

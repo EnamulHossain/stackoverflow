@@ -371,7 +371,6 @@ func TestPostgresStorage_QuestionPublished(t *testing.T) {
 	}
 }
 
-
 func TestPostgresStorage_ListQuestionByUser(t *testing.T) {
 	s, tr := NewTestStorage(getDBConnectionString(), getMigrationDir())
 	t.Parallel()
@@ -485,12 +484,6 @@ func TestPostgresStorage_ListQuestionByUser(t *testing.T) {
 	}
 }
 
-
-
-
-
-
-
 func TestPostgresStorage_ListQuestion(t *testing.T) {
 	s, tr := NewTestStorage(getDBConnectionString(), getMigrationDir())
 	t.Parallel()
@@ -525,23 +518,23 @@ func TestPostgresStorage_ListQuestion(t *testing.T) {
 
 	newquestions := []storage.Question{
 		{
-			UserId: int(UserId),
-			CategoryId: int(catid),
-			Name:   sql.NullString{String: catname, Valid: true},
-			Title: "Question Title",
+			UserId:      int(UserId),
+			CategoryId:  int(catid),
+			Name:        sql.NullString{String: catname, Valid: true},
+			Title:       "Question Title",
 			Description: "Question Description",
 		},
 		{
 			UserId:      int(UserId),
 			CategoryId:  int(catid),
-			Name:   sql.NullString{String: catname, Valid: true},
+			Name:        sql.NullString{String: catname, Valid: true},
 			Title:       "Question Title1",
 			Description: "Question Description1",
 		},
 		{
 			UserId:      int(UserId),
 			CategoryId:  int(catid),
-			Name:   sql.NullString{String: catname, Valid: true},
+			Name:        sql.NullString{String: catname, Valid: true},
 			Title:       "Question Title2",
 			Description: "Question Description2",
 		},
@@ -565,23 +558,23 @@ func TestPostgresStorage_ListQuestion(t *testing.T) {
 			in:   storage.UserFilter{},
 			want: []storage.Question{
 				{
-					UserId: int(UserId),
-					CategoryId: int(catid),
-					Name:   sql.NullString{String: catname, Valid: true},
-					Title: "Question Title",
+					UserId:      int(UserId),
+					CategoryId:  int(catid),
+					Name:        sql.NullString{String: catname, Valid: true},
+					Title:       "Question Title",
 					Description: "Question Description",
 				},
 				{
-					UserId: int(UserId),
-					CategoryId: int(catid),
-					Name:   sql.NullString{String: catname, Valid: true},
-					Title: "Question Title1",
+					UserId:      int(UserId),
+					CategoryId:  int(catid),
+					Name:        sql.NullString{String: catname, Valid: true},
+					Title:       "Question Title1",
 					Description: "Question Description1",
 				},
 				{
 					UserId:      int(UserId),
 					CategoryId:  int(catid),
-					Name:   sql.NullString{String: catname, Valid: true},
+					Name:        sql.NullString{String: catname, Valid: true},
 					Title:       "Question Title2",
 					Description: "Question Description2",
 				},

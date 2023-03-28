@@ -85,11 +85,12 @@ func (h Handler) Error(w http.ResponseWriter, error string, code int) {
 	tpl := fmt.Sprintf("%s.html", tf)
 	t := h.Templates.Lookup(tpl)
 	if t == nil {
-		log.Fatalln("unable to find template")
+		http.Error(w, "internal server error", http.StatusInternalServerError)
 	}
 
 	if err := t.Execute(w, ep); err != nil {
-		log.Fatalln(err)
+		http.Error(w, "internal server error", http.StatusInternalServerError)
+
 	}
 }
 

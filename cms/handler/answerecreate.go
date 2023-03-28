@@ -50,14 +50,14 @@ func (h Handler) CreateAnswere(w http.ResponseWriter, r *http.Request) {
 
 	uid, err := strconv.Atoi(id)
 	if err != nil {
-		log.Fatalln(err)
+		http.Error(w, "internal server error", http.StatusInternalServerError)
 	}
 
 	res, err := h.questionSvc.EditQuestion(r.Context(), &questionpb.EditQuestionRequest{
 		ID: int32(uid),
 	})
 	if err != nil {
-		log.Fatalln(err)
+		http.Error(w, "internal server error", http.StatusInternalServerError)
 	}
 
 	// ANSWERE LIST Start
