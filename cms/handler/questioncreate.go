@@ -110,5 +110,5 @@ func (h Handler) CreateQuestionPost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	http.Redirect(w, r, "/users/question/create", http.StatusSeeOther)
+	http.Redirect(w, r, "/users/dashboard", http.StatusSeeOther)
 }

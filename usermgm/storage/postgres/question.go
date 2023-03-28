@@ -43,6 +43,7 @@ const listcqueQuery = `
 		FROM question q
 		LEFT JOIN category c ON c.id = q.category_id
 		WHERE c.name ILIKE '%%' || $1 || '%%' OR q.title ILIKE '%%' || $1 || '%%' OR q.description ILIKE '%%' || $1 || '%%'
+		AND published_at IS NOT NULL
 		LIMIT $2
 		OFFSET $3;
 		`

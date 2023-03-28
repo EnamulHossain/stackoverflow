@@ -42,7 +42,7 @@
                         <tr>
 
                             <td>
-                                {{if eq $.USERID .UserId}}
+                                {{if eq $.USERID $.Form.UserId}}
                                 <form action="/users/answere/iscorrect" method="post">
                                     <input type="hidden" name="csrf_token" value="{{$.CSRFToken}}">
                                     <input type="hidden" name="ID" value="{{.ID}}">

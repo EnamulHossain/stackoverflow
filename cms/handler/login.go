@@ -75,15 +75,15 @@ func (h Handler) LoginPostHandler(w http.ResponseWriter, r *http.Request) {
 	h.sessionManager.Put(r.Context(), "userID", strconv.Itoa(int(u.GetUser().ID)))
 	h.sessionManager.Put(r.Context(), "IsAdmin", (u.GetUser().IsAdmin))
 
-	if u.User.IsAdmin == true {
+	// if u.User.IsAdmin == true {
 
-		http.Redirect(w, r, "/admin/list", http.StatusSeeOther)
-	}
-	if u.User.IsAdmin == false {
+	// 	http.Redirect(w, r, "/admin/list", http.StatusSeeOther)
+	// }
+	// if u.User.IsAdmin == false {
 
 		http.Redirect(w, r, "/users/dashboard", http.StatusSeeOther)
 
-	}
+	// }
 
 }
 
